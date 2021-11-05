@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.foxminded.appliancesshop.domain.Cart;
 import com.foxminded.appliancesshop.mappers.CartMapper;
-import com.foxminded.appliancesshop.mappers.CustomerMapperImpl;
 import com.foxminded.appliancesshop.mappers.ItemMapper;
 import com.foxminded.appliancesshop.model.CartDTO;
 import com.foxminded.appliancesshop.repositories.CartRepository;
+import com.foxminded.appliancesshop.repositories.CustomerRepository;
 
 @Service
 public class CartService {
@@ -22,7 +22,7 @@ public class CartService {
 	private CartMapper cartMapper;
 
 	@Autowired
-	private CustomerMapperImpl customerMapper;
+	private CustomerRepository customerRepository;
 
 	@Autowired
 	private ItemMapper itemMapper;
@@ -47,7 +47,7 @@ public class CartService {
 			throw new ResourseNotFoundException();
 		}
 		if (cart.getCustomer() == null) {
-			cart.setCustomer(customerMapper.customerDTOtoCustomer(cartDTO.getCustomer()));
+			cart.setCustomer(customerRepository.getById(cartDTO.getCustomerId()));
 		}
 		if (cart.getItemsList() == null) {
 			cart.setItems(

@@ -41,4 +41,13 @@ public class Product implements Comparable<Product> {
 		this.category = category;
 	}
 
+	public Product(Long id, String name, Category category, Integer price, String brand, String description) {
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.price = price;
+		this.brand = brand;
+		this.description = description;
+	}
+
 }

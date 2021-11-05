@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.foxminded.appliancesshop.domain.Cart;
-import com.foxminded.appliancesshop.mappers.CartMapperImpl;
+import com.foxminded.appliancesshop.mappers.CartMapper;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class CartListDTO {
 
 	@Autowired
-	private CartMapperImpl mapper;
+	private CartMapper mapper;
 
 	private List<CartDTO> carts;
 

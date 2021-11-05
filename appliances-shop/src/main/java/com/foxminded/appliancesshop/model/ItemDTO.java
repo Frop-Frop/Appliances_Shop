@@ -12,8 +12,8 @@ public class ItemDTO {
 	private Long id;
 	private Integer quantity;
 	private ProductDTO product;
-	private CartDTO cart;
-	private CustomerDTO customer;
+	private Long cartId;
+	private Long customerId;
 	private Integer cost;
 
 }

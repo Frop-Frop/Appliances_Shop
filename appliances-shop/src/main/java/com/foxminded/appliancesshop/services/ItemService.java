@@ -1,16 +1,18 @@
 package com.foxminded.appliancesshop.services;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.foxminded.appliancesshop.domain.Item;
-import com.foxminded.appliancesshop.mappers.CartMapper;
-import com.foxminded.appliancesshop.mappers.CustomerMapperImpl;
 import com.foxminded.appliancesshop.mappers.ItemMapper;
-import com.foxminded.appliancesshop.mappers.ProductMapper;
 import com.foxminded.appliancesshop.model.ItemDTO;
 import com.foxminded.appliancesshop.model.ItemListDTO;
+import com.foxminded.appliancesshop.repositories.CartRepository;
+import com.foxminded.appliancesshop.repositories.CustomerRepository;
 import com.foxminded.appliancesshop.repositories.ItemRepository;
+import com.foxminded.appliancesshop.repositories.ProductRepository;
 
 @Service
 public class ItemService {
@@ -22,16 +24,17 @@ public class ItemService {
 	private ItemMapper itemMapper;
 
 	@Autowired
-	private ProductMapper productMapper;
+	private ProductRepository productRepository;
 
 	@Autowired
-	private CartMapper cartMapper;
+	private CartRepository cartRepository;
 
 	@Autowired
-	private CustomerMapperImpl customerMapper;
+	private CustomerRepository customerRepository;
 
 	public ItemListDTO getAllItemsInCart(Long id) {
-		return new ItemListDTO(itemRepository.findAll());
+		return new ItemListDTO(
+				itemRepository.findAll().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
 	}
 
 	public ItemDTO getItemById(Long id) {
@@ -63,13 +66,13 @@ public class ItemService {
 			item.setQuantity(itemDTO.getQuantity());
 		}
 		if (item.getProduct() == null) {
-			item.setProduct(productMapper.productDTOtoProduct(itemDTO.getProduct()));
+			item.setProduct(productRepository.getById(itemDTO.getProduct().getId()));
 		}
 		if (item.getCart() == null) {
-			item.setCart(cartMapper.cartDTOtoCart(itemDTO.getCart()));
+			item.setCart(cartRepository.findById(itemDTO.getCartId()).get());
 		}
 		if (item.getCustomer() == null) {
-			item.setCustomer(customerMapper.customerDTOtoCustomer(itemDTO.getCustomer()));
+			item.setCustomer(customerRepository.getById(itemDTO.getCustomerId()));
 		}
 		return itemMapper.itemToItemDTO(itemRepository.save(item));
 	}

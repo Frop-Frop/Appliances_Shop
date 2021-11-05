@@ -80,4 +80,16 @@ public class Customer {
 		return result;
 	}
 
+	public Customer(Long id, String firstName, String lastName, String email, String password, Cart cart,
+			Set<Item> deferreds) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.cart = cart;
+		this.deferreds = deferreds;
+	}
+
 }

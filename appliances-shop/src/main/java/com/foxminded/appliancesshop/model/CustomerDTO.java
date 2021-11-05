@@ -18,4 +18,14 @@ public class CustomerDTO {
 	private ItemListDTO deferreds;
 	private AddressDTO address;
 
+	public CustomerDTO(Long id, String firstName, String lastName, String email, String password, CartDTO cart,
+			ItemListDTO deferreds) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.deferreds = deferreds;
+	}
+
 }

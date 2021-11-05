@@ -9,7 +9,7 @@ import com.foxminded.appliancesshop.domain.Cart;
 import com.foxminded.appliancesshop.domain.Customer;
 import com.foxminded.appliancesshop.mappers.AddressMapper;
 import com.foxminded.appliancesshop.mappers.CartMapper;
-import com.foxminded.appliancesshop.mappers.CustomerMapperImpl;
+import com.foxminded.appliancesshop.mappers.CustomerMapper;
 import com.foxminded.appliancesshop.mappers.ItemMapper;
 import com.foxminded.appliancesshop.model.CustomerDTO;
 import com.foxminded.appliancesshop.model.CustomerListDTO;
@@ -20,7 +20,7 @@ import com.foxminded.appliancesshop.repositories.CustomerRepository;
 public class CustomerService {
 
 	@Autowired
-	private CustomerMapperImpl customerMapper;
+	private CustomerMapper customerMapper;
 
 	@Autowired
 	private CartMapper cartMapper;

@@ -1,12 +1,6 @@
 package com.foxminded.appliancesshop.model;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.foxminded.appliancesshop.domain.Item;
-import com.foxminded.appliancesshop.mappers.ItemMapperImpl;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ItemListDTO {
-
-	@Autowired
-	private ItemMapperImpl mapper;
 
 	private List<ItemDTO> items;
 
@@ -28,8 +19,8 @@ public class ItemListDTO {
 		return result;
 	}
 
-	public ItemListDTO(List<Item> itemList) {
-		this.items = itemList.stream().map(mapper::itemToItemDTO).collect(Collectors.toList());
+	public ItemListDTO(List<ItemDTO> itemList) {
+		this.items = itemList;
 	}
 
 }

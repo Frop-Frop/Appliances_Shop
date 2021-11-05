@@ -2,6 +2,7 @@ package com.foxminded.appliancesshop.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,7 +99,11 @@ public class ProductService {
 			product.setName(productDTO.getName());
 		}
 		if (product.getCategory() == null) {
-			product.setCategory(categoryMapper.categoryDTOtoCategory(productDTO.getCategory()));
+			Optional<Category> category = categoryRepository.findById(productDTO.getCategoryId());
+			if (category.isEmpty()) {
+				throw new ResourseNotFoundException("Category with id: " + productDTO.getId() + "not found");
+			}
+			product.setCategory(category.get());
 		}
 		if (product.getPrice() == null) {
 			product.setPrice(productDTO.getPrice());
@@ -108,9 +113,6 @@ public class ProductService {
 		}
 		if (product.getDescription() == null) {
 			product.setDescription(productDTO.getDescription());
-		}
-		if (product.getItem() == null) {
-			product.setItem(itemMapper.itemDTOtoItem(productDTO.getItem()));
 		}
 		return productMapper.productToProductDTO(productRepository.save(product));
 	}

@@ -69,7 +69,7 @@ public class CategoryService {
 					.map(productMapper::productDTOtoProduct).collect(Collectors.toSet()));
 		}
 		if (category.getSuperCategory() == null) {
-			category.setSuperCategory(categoryMapper.categoryDTOtoCategory(categoryDTO.getSuperCategory()));
+			category.setSuperCategory(categoryRepository.getById(categoryDTO.getSuperCategory().getId()));
 		}
 		return categoryMapper.categoryToCategoryDTO(categoryRepository.save(category));
 	}

@@ -11,10 +11,9 @@ public class ProductDTO {
 
 	private Long id;
 	private String name;
-	private CategoryDTO category;
+	private Long categoryId;
 	private Integer price;
 	private String brand;
 	private String description;
-	private ItemDTO item;
 
 }

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.foxminded.appliancesshop.domain.Category;
-import com.foxminded.appliancesshop.mappers.CategoryMapperImpl;
+import com.foxminded.appliancesshop.mappers.CategoryMapper;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class CategoryListDTO {
 
 	@Autowired
-	private CategoryMapperImpl mapper;
+	private CategoryMapper mapper;
 
 	private List<CategoryDTO> categories;
 

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.foxminded.appliancesshop.domain.Address;
-import com.foxminded.appliancesshop.mappers.AddressMapperImpl;
+import com.foxminded.appliancesshop.mappers.AddressMapper;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class AddressListDTO {
 
 	@Autowired
-	private AddressMapperImpl mapper;
+	private AddressMapper mapper;
 
 	private List<AddressDTO> addresses;
 

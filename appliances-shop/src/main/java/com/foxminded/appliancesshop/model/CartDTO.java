@@ -1,5 +1,7 @@
 package com.foxminded.appliancesshop.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,15 +12,20 @@ import lombok.NoArgsConstructor;
 public class CartDTO {
 
 	private Long id;
-	private CustomerDTO customer;
+	private Long customerId;
 	private ItemListDTO items;
+
+	public CartDTO(Long id, List<ItemDTO> items) {
+		this.id = id;
+		this.items = new ItemListDTO(items);
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id.intValue();
-		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
+		result = prime * result + ((customerId == null) ? 0 : customerId.hashCode());
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		return result;
 	}

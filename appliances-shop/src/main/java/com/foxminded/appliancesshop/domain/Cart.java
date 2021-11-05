@@ -42,6 +42,11 @@ public class Cart {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "cart")
 	private Set<Item> items = new HashSet<>();
 
+	public Cart(Long id, Set<Item> items) {
+		this.id = id;
+		this.items = items;
+	}
+
 	public SortedSet<Item> getItems() {
 		SortedSet<Item> result = new TreeSet<>();
 		items.stream().forEach(result::add);
