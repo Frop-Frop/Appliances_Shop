@@ -54,4 +54,11 @@ public class Item implements Comparable<Item> {
 		return result;
 	}
 
+	public Item(Integer quantity, Product product, Cart cart, Customer customer) {
+		this.quantity = quantity;
+		this.product = product;
+		this.cart = cart;
+		this.customer = customer;
+	}
+
 }

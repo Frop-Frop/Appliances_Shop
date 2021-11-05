@@ -25,7 +25,8 @@ public class CategoryService {
 	private CategoryRepository categoryRepository;
 
 	public CategoryListDTO getAllCategories() {
-		return new CategoryListDTO(categoryRepository.findAll());
+		return new CategoryListDTO(categoryRepository.findAll().stream().map(categoryMapper::categoryToCategoryDTO)
+				.collect(Collectors.toList()));
 	}
 
 	public CategoryDTO getCategoryById(Long id) {
@@ -37,7 +38,8 @@ public class CategoryService {
 	}
 
 	public CategoryListDTO getSubCategories(Long id) {
-		return new CategoryListDTO(categoryRepository.findSubCategories(id));
+		return new CategoryListDTO(categoryRepository.findSubCategories(id).stream()
+				.map(categoryMapper::categoryToCategoryDTO).collect(Collectors.toList()));
 	}
 
 	public CategoryDTO createNewCategory(CategoryDTO categoryDTO) {

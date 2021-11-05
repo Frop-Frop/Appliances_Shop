@@ -34,14 +34,14 @@ public class ProductController {
 		return new ResponseEntity<ProductDTO>(productService.getProductById(id), HttpStatus.OK);
 	}
 
-	@GetMapping("{name}")
+	@GetMapping("product/{name}")
 	public ResponseEntity<ProductDTO> getProductByName(@PathVariable String name) {
 		return new ResponseEntity<ProductDTO>(productService.getProductByName(name), HttpStatus.OK);
 	}
 
 	@GetMapping("brand/{name}")
-	public ResponseEntity<ProductListDTO> getAllProductsByBrand(@PathVariable String brand) {
-		return new ResponseEntity<ProductListDTO>(productService.getAllProductsByBrand(brand), HttpStatus.OK);
+	public ResponseEntity<ProductListDTO> getAllProductsByBrand(@PathVariable String name) {
+		return new ResponseEntity<ProductListDTO>(productService.getAllProductsByBrand(name), HttpStatus.OK);
 	}
 
 	@GetMapping("category/{id}")

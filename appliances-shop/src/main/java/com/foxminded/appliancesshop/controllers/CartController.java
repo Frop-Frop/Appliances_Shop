@@ -15,7 +15,7 @@ import com.foxminded.appliancesshop.model.CartDTO;
 import com.foxminded.appliancesshop.services.CartService;
 
 @RestController
-@RequestMapping("appliances/cart/")
+@RequestMapping("appliances/carts/")
 public class CartController {
 
 	@Autowired

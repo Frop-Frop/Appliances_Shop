@@ -9,14 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomerListDTO {
 
-	/*
-	 * @Autowired private CustomerMapperImpl mapper;
-	 */
-
 	private List<CustomerDTO> customers;
 
 	public CustomerListDTO(List<CustomerDTO> customerList) {
-		this.customers = customerList/* .stream().map(mapper::customerToCustomerDTO).collect(Collectors.toList()) */;
+		this.customers = customerList;
 	}
 
 }

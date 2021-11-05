@@ -54,9 +54,9 @@ public class Cart {
 	}
 
 	public List<Item> getItemsList() {
-		List<Item> items = new ArrayList<>();
-		items.forEach(items::add);
-		return items;
+		List<Item> itemsList = new ArrayList<>();
+		items.forEach(itemsList::add);
+		return itemsList;
 	}
 
 	public int getSum() {
@@ -66,6 +66,10 @@ public class Cart {
 			result += iterator.next().getCost();
 		}
 		return result;
+	}
+
+	public void addItem(Item item) {
+		items.add(item);
 	}
 
 	@Override

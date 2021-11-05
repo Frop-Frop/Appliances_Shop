@@ -43,8 +43,8 @@ public class AddressMapper {
 		if (address == null) {
 			return null;
 		}
-		AddressDTO addressDTO = new AddressDTO(address.getId(), address.getCountry(), address.getRegion(),
-				address.getCity(), address.getStreet(), address.getHouseNumber());
+		AddressDTO addressDTO = new AddressDTO(address.getId(), address.getCustomer().getId(), address.getCountry(),
+				address.getRegion(), address.getCity(), address.getStreet(), address.getHouseNumber());
 		return addressDTO;
 	}
 

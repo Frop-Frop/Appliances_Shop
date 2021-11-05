@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,8 @@ public class ProductService {
 	private CategoryRepository categoryRepository;
 
 	public ProductListDTO getAllProducts() {
-		return new ProductListDTO(productRepository.findAll());
+		return new ProductListDTO(productRepository.findAll().stream().map(productMapper::productToProductDTO)
+				.collect(Collectors.toList()));
 	}
 
 	public ProductDTO getProductById(Long id) {
@@ -49,11 +51,13 @@ public class ProductService {
 	}
 
 	public ProductListDTO getAllProductsByBrand(String brand) {
-		return new ProductListDTO(productRepository.findAllProductsByBrand(brand));
+		return new ProductListDTO(productRepository.findAllProductsByBrand(brand).stream()
+				.map(productMapper::productToProductDTO).collect(Collectors.toList()));
 	}
 
 	public ProductListDTO getAllProductsInCategory(Long id) {
-		return new ProductListDTO(productRepository.findAllProductsInCategory(id));
+		return new ProductListDTO(productRepository.findAllProductsInCategory(id).stream()
+				.map(productMapper::productToProductDTO).collect(Collectors.toList()));
 	}
 
 	public ProductListDTO getAllProductsInAllSubCategories(Long id) {
@@ -66,10 +70,9 @@ public class ProductService {
 			}
 		});
 		subCategories.stream().forEach(allSubCategories::add);
-		List<Product> products = new ArrayList<>();
+		List<ProductDTO> products = new ArrayList<>();
 		allSubCategories.stream().forEach(subcategory -> {
-			getAllProductsInCategory(subcategory.getId()).getProducts().stream().map(productMapper::productDTOtoProduct)
-					.forEach(products::add);
+			getAllProductsInCategory(subcategory.getId()).getProducts().forEach(products::add);
 		});
 		return new ProductListDTO(products);
 	}

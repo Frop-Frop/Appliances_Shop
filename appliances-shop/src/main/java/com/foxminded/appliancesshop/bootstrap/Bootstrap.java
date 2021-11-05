@@ -12,6 +12,7 @@ import com.foxminded.appliancesshop.domain.Address;
 import com.foxminded.appliancesshop.domain.Cart;
 import com.foxminded.appliancesshop.domain.Category;
 import com.foxminded.appliancesshop.domain.Customer;
+import com.foxminded.appliancesshop.domain.Item;
 import com.foxminded.appliancesshop.domain.Product;
 import com.foxminded.appliancesshop.repositories.AddressRepository;
 import com.foxminded.appliancesshop.repositories.CartRepository;
@@ -51,8 +52,8 @@ public class Bootstrap implements CommandLineRunner {
 		System.out.println("Categories loaded");
 		loadProducts();
 		System.out.println("Products loaded");
-		List<Category> subCategories = categoryRepository.findSubCategories(1L);
-		subCategories.stream().forEach(System.out::println);
+		addItemsToCarts();
+		System.out.println("Items added to carts");
 	}
 
 	private void loadAdsresses() {
@@ -72,7 +73,7 @@ public class Bootstrap implements CommandLineRunner {
 			address.setCountry(countries.get(i));
 			address.setRegion(regions.get(i));
 			address.setCity(cities.get(i));
-			address.setStreet(cities.get(i));
+			address.setStreet(streets.get(i));
 			address.setHouseNumber(houseNumbers.get(i));
 			addressRepository.save(address);
 		}
@@ -304,6 +305,24 @@ public class Bootstrap implements CommandLineRunner {
 				"Samsung - 36\" Range Hood - Stainless Steel",
 				"LG - 36\" Convertible Range Hood with WiFi - Stainless Steel");
 		generateProducts(category, names, descriptions, 150000, 360000);
+	}
+
+	private void addItemsToCarts() {
+		for (Long iter = 1l; iter < 10l; iter++) {
+			Customer customer = customerRepository.findById(iter).get();
+			Cart cart = customer.getCart();
+			int cartSize = (int) ((Math.random() * (5 - 1)) + 1);
+			for (int j = 0; j < cartSize; j++) {
+				Integer productId = (int) ((Math.random() * (47 - 1)) + 1);
+				Item item = new Item();
+				item.setCart(cart);
+				item.setProduct(productRepository.findById(productId.longValue()).get());
+				item.setQuantity((int) ((Math.random() * (10 - 1)) + 1));
+				Item savedItem = itemRepository.save(item);
+				cart.addItem(savedItem);
+			}
+			cartRepository.save(cart);
+		}
 	}
 
 	private void generateProducts(Category category, List<String> names, List<String> descriptions, int minPrice,

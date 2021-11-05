@@ -2,6 +2,7 @@ package com.foxminded.appliancesshop.mappers;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,9 @@ public class CategoryMapper {
 			return null;
 		}
 		CategoryDTO superCategory = categoryToCategoryDTO(category.getSuperCategory());
-		CategoryDTO categoryDTO = new CategoryDTO(category.getId(), category.getName(),
-				new ProductListDTO(category.getProductsList()), superCategory);
+		CategoryDTO categoryDTO = new CategoryDTO(category.getId(), category.getName(), new ProductListDTO(category
+				.getProductsList().stream().map(productMapper::productToProductDTO).collect(Collectors.toList())),
+				superCategory);
 		return categoryDTO;
 	}
 
