@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.foxminded.appliancesshop.domain.Category;
 import com.foxminded.appliancesshop.domain.Product;
-import com.foxminded.appliancesshop.mappers.CategoryMapper;
-import com.foxminded.appliancesshop.mappers.ItemMapper;
 import com.foxminded.appliancesshop.mappers.ProductMapper;
 import com.foxminded.appliancesshop.model.ProductDTO;
 import com.foxminded.appliancesshop.model.ProductListDTO;
 import com.foxminded.appliancesshop.repositories.CategoryRepository;
+import com.foxminded.appliancesshop.repositories.CustomerRepository;
 import com.foxminded.appliancesshop.repositories.ProductRepository;
 
 @Service
@@ -25,16 +24,13 @@ public class ProductService {
 	private ProductMapper productMapper;
 
 	@Autowired
-	private CategoryMapper categoryMapper;
-
-	@Autowired
-	private ItemMapper itemMapper;
-
-	@Autowired
 	private ProductRepository productRepository;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	public ProductListDTO getAllProducts() {
 		return new ProductListDTO(productRepository.findAll().stream().map(productMapper::productToProductDTO)

@@ -29,9 +29,16 @@ public class ItemMapper {
 		if (item == null) {
 			return null;
 		}
+		Long customerId = null;
+		if (item.getCustomer() != null) {
+			customerId = item.getCustomer().getId();
+		}
 		ProductDTO productDTO = productMapper.productToProductDTO(item.getProduct());
-		ItemDTO itemDTO = new ItemDTO(item.getId(), item.getQuantity(), productDTO, item.getCart().getId(),
-				item.getCart().getId(), item.getCost());
+		Long cartId = null;
+		if (item.getCart() != null) {
+			cartId = item.getCart().getId();
+		}
+		ItemDTO itemDTO = new ItemDTO(item.getId(), item.getQuantity(), productDTO, cartId, customerId, item.getCost());
 		return itemDTO;
 	}
 

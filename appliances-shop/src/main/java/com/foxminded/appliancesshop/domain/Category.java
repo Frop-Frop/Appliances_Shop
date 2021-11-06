@@ -52,9 +52,9 @@ public class Category {
 	}
 
 	public List<Product> getProductsList() {
-		List<Product> products = new ArrayList<>();
-		products.forEach(products::add);
-		return products;
+		List<Product> productsList = new ArrayList<>();
+		products.forEach(productsList::add);
+		return productsList;
 	}
 
 	public Category(String name, Category superCategory) {

@@ -61,7 +61,7 @@ public class Customer {
 
 	public List<Item> getDeferredsList() {
 		List<Item> deferredsList = new ArrayList<>();
-		deferreds.forEach(deferreds::add);
+		deferreds.forEach(deferredsList::add);
 		return deferredsList;
 	}
 

@@ -54,6 +54,9 @@ public class Bootstrap implements CommandLineRunner {
 		System.out.println("Products loaded");
 		addItemsToCarts();
 		System.out.println("Items added to carts");
+		addItemsToDeferreds();
+		// deferredsLoading();
+		System.out.println("Items added to deferreds");
 	}
 
 	private void loadAdsresses() {
@@ -322,6 +325,22 @@ public class Bootstrap implements CommandLineRunner {
 				cart.addItem(savedItem);
 			}
 			cartRepository.save(cart);
+		}
+	}
+
+	private void addItemsToDeferreds() {
+		for (Long iter = 1l; iter < 5l; iter++) {
+			Customer customer = customerRepository.findById(iter).get();
+			int deferredsSize = (int) ((Math.random() * (5 - 1)) + 1);
+			for (int j = 0; j < deferredsSize; j++) {
+				Integer productId = (int) ((Math.random() * (47 - 1)) + 1);
+				Item item = new Item();
+				item.setProduct(productRepository.findById(productId.longValue()).get());
+				item.setQuantity((int) ((Math.random() * (10 - 1)) + 1));
+				Item savedItem = itemRepository.save(item);
+				customer.addItemToDeferreds(savedItem);
+			}
+			customerRepository.save(customer);
 		}
 	}
 

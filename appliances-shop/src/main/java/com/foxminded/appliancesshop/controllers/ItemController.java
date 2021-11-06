@@ -34,6 +34,11 @@ public class ItemController {
 		return new ResponseEntity<ItemDTO>(itemService.getItemById(id), HttpStatus.OK);
 	}
 
+	@GetMapping("customer/{id}")
+	public ResponseEntity<ItemListDTO> getCustomerDeferreds(Long id) {
+		return new ResponseEntity<ItemListDTO>(itemService.getCustomerDeferreds(id), HttpStatus.OK);
+	}
+
 	@PostMapping
 	public ResponseEntity<ItemDTO> createNewItem(@RequestBody ItemDTO itemDTO) {
 		return new ResponseEntity<ItemDTO>(itemService.createNewItem(itemDTO), HttpStatus.OK);

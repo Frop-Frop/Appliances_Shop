@@ -37,6 +37,11 @@ public class ItemService {
 				itemRepository.findAll().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
 	}
 
+	public ItemListDTO getCustomerDeferreds(Long id) {
+		return new ItemListDTO(itemRepository.findCustomerDeferreds(id).stream().map(itemMapper::itemToItemDTO)
+				.collect(Collectors.toList()));
+	}
+
 	public ItemDTO getItemById(Long id) {
 		return itemRepository.findById(id).map(itemMapper::itemToItemDTO).orElseThrow(ResourseNotFoundException::new);
 	}

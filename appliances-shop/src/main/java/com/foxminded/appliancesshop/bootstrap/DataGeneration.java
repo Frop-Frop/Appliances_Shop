@@ -107,38 +107,42 @@ public class DataGeneration /* implements CommandLineRunner */ {
 		item1.setQuantity(5);
 		Item savedItem1 = itemRepository.save(item1);
 
-		savedItem.setCart(savedCart);
-		savedItem1.setCart(savedCart);
-		savedItem = itemRepository.save(savedItem);
-		savedItem1 = itemRepository.save(savedItem1);
+		// savedItem.setCart(savedCart);
+		// savedItem1.setCart(savedCart);
+		// savedItem = itemRepository.save(savedItem);
+		// savedItem1 = itemRepository.save(savedItem1);
 
-		savedCart.getItems().add(savedItem);
-		savedCart.getItems().add(savedItem1);
-		savedCart = cartRepository.save(savedCart);
+		// savedCart.getItems().add(savedItem);
+		// savedCart.getItems().add(savedItem1);
+		// savedCart = cartRepository.save(savedCart);
 
 		Item item2 = new Item();
 		item2.setProduct(savedProduct1);
 		item2.setQuantity(5);
 		Item savedItem2 = itemRepository.save(item2);
 
-		savedCustomer.addItemToDeferreds(savedItem2);
+		// savedCustomer.addItemToDeferreds(savedItem2);
 		savedCustomer = customerRepository.save(savedCustomer);
 
-		savedItem2.setCustomer(savedCustomer);
+		// savedItem2.setCustomer(savedCustomer);
 		savedItem2 = itemRepository.save(savedItem2);
 
 		Category fetchedCategory = categoryRepository.findById(2L).get();
-		System.out.println("Fetched category: " + fetchedCategory.getName());
-		System.out.println("Fetched super category: " + fetchedCategory.getSuperCategory().getName());
-		fetchedCategory.getProducts().iterator()
-				.forEachRemaining(p -> System.out.println(p.getName() + " : " + p.getDescription()));
+		// System.out.println("Fetched category: " + fetchedCategory.getName());
+		// System.out.println("Fetched super category: " +
+		// fetchedCategory.getSuperCategory().getName());
+		// fetchedCategory.getProducts().iterator()
+		// .forEachRemaining(p -> System.out.println(p.getName() + " : " +
+		// p.getDescription()));
 
 		Customer fetchedCustomer = customerRepository.findById(1L).get();
 		Address fetchedAddress = fetchedCustomer.getAddress();
-		System.out.println(fetchedAddress.getCountry() + " " + fetchedAddress.getRegion() + " "
-				+ fetchedAddress.getCity() + " " + fetchedAddress.getStreet());
+		// System.out.println(fetchedAddress.getCountry() + " " +
+		// fetchedAddress.getRegion() + " "
+		// + fetchedAddress.getCity() + " " + fetchedAddress.getStreet());
 
 		System.out.println(fetchedCustomer.getDeferreds().size() + " - deferreds size");
+		System.out.println(fetchedCustomer.getCart().getItemsList().size() + " - cart size");
 
 		fetchedCustomer.getDeferreds().iterator().forEachRemaining(
 				d -> System.out.println("Deferred: " + d.getProduct().getName() + " " + d.getQuantity()));
@@ -190,7 +194,7 @@ public class DataGeneration /* implements CommandLineRunner */ {
 		savedItemCup = itemRepository.save(savedItemCup);
 		savedItemCup = itemRepository.save(savedItemCup1);
 
-		System.out.println("Items saved once again");
+		System.out.println("Items saved once again. Deferreds");
 
 		fetchedCustomer.getDeferreds().stream()
 				.forEach(d -> System.out.println(d.getProduct().getName() + " quantity: " + d.getQuantity()));

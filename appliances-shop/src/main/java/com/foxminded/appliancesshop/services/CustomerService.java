@@ -1,5 +1,6 @@
 package com.foxminded.appliancesshop.services;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,14 @@ public class CustomerService {
 	public CustomerDTO getCustomerById(Long id) {
 		return customerRepository.findById(id).map(customerMapper::customerToCustomerDTO)
 				.orElseThrow(ResourseNotFoundException::new);
+	}
+
+	public Customer getCustomerOjectById(Long id) {
+		Optional<Customer> customer = customerRepository.findById(id);
+		if (customer.isEmpty()) {
+			throw new ResourseNotFoundException("Customer with id: " + id + " not found");
+		}
+		return customer.get();
 	}
 
 	public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
