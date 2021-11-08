@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.foxminded.appliancesshop.domain.Administrator;
 import com.foxminded.appliancesshop.domain.Customer;
 
 import lombok.Data;
@@ -60,6 +61,13 @@ public class SecurityUser implements UserDetails {
 				customer.getStatus().equals(Status.ACTIVE), customer.getStatus().equals(Status.ACTIVE),
 				customer.getStatus().equals(Status.ACTIVE), customer.getStatus().equals(Status.ACTIVE),
 				customer.getRole().getAuthorities());
+	}
+
+	public static UserDetails fromAdministrator(Administrator administrator) {
+		return new org.springframework.security.core.userdetails.User(administrator.getEmail(),
+				administrator.getPassword(), administrator.getStatus().equals(Status.ACTIVE),
+				administrator.getStatus().equals(Status.ACTIVE), administrator.getStatus().equals(Status.ACTIVE),
+				administrator.getStatus().equals(Status.ACTIVE), administrator.getRole().getAuthorities());
 	}
 
 }

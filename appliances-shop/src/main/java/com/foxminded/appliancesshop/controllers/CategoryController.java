@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -45,21 +46,25 @@ public class CategoryController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<CategoryDTO> createNewCategory(@RequestBody CategoryDTO categoryDTO) {
 		return new ResponseEntity<CategoryDTO>(categoryService.createNewCategory(categoryDTO), HttpStatus.OK);
 	}
 
 	@PutMapping("{id}")
+	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
 		return new ResponseEntity<CategoryDTO>(categoryService.saveCategoryByDTO(id, categoryDTO), HttpStatus.OK);
 	}
 
 	@PatchMapping("{id}")
+	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<CategoryDTO> patchCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
 		return new ResponseEntity<CategoryDTO>(categoryService.patchCategory(id, categoryDTO), HttpStatus.OK);
 	}
 
 	@DeleteMapping("{id}")
+	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
 		categoryService.deleteById(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);

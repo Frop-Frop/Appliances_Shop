@@ -23,17 +23,19 @@ public class CartController {
 	private CartService cartService;
 
 	@GetMapping("{id}")
-	@PreAuthorize("hasAuthority('read')")
+	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<CartDTO> getCartById(@PathVariable Long id) {
 		return new ResponseEntity<CartDTO>(cartService.getCartById(id), HttpStatus.OK);
 	}
 
 	@PutMapping("{id}")
+	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<CartDTO> updateCart(@RequestBody CartDTO cartDTO, @PathVariable Long id) {
 		return new ResponseEntity<CartDTO>(cartService.saveCartByDTO(id, cartDTO), HttpStatus.OK);
 	}
 
 	@PatchMapping("{id}")
+	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<CartDTO> patchCart(@RequestBody CartDTO cartDTO, @PathVariable Long id) {
 		return new ResponseEntity<CartDTO>(cartService.patchCart(id, cartDTO), HttpStatus.OK);
 	}

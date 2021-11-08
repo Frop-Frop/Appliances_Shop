@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -55,21 +56,25 @@ public class ProductController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<ProductDTO> createNewProduct(@RequestBody ProductDTO productDTO) {
 		return new ResponseEntity<ProductDTO>(productService.createNewProduct(productDTO), HttpStatus.OK);
 	}
 
 	@PutMapping("{id}")
+	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO, @PathVariable Long id) {
 		return new ResponseEntity<ProductDTO>(productService.saveProductByDTO(id, productDTO), HttpStatus.OK);
 	}
 
 	@PatchMapping("{id}")
+	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<ProductDTO> patchProduct(@RequestBody ProductDTO productDTO, @PathVariable Long id) {
 		return new ResponseEntity<ProductDTO>(productService.patchProduct(id, productDTO), HttpStatus.OK);
 	}
 
 	@DeleteMapping("{id}")
+	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
 		productService.deleteById(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);

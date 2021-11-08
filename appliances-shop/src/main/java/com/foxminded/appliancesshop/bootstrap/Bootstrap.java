@@ -9,12 +9,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.foxminded.appliancesshop.domain.Address;
+import com.foxminded.appliancesshop.domain.Administrator;
 import com.foxminded.appliancesshop.domain.Cart;
 import com.foxminded.appliancesshop.domain.Category;
 import com.foxminded.appliancesshop.domain.Customer;
 import com.foxminded.appliancesshop.domain.Item;
 import com.foxminded.appliancesshop.domain.Product;
+import com.foxminded.appliancesshop.domain.security.Role;
+import com.foxminded.appliancesshop.domain.security.Status;
 import com.foxminded.appliancesshop.repositories.AddressRepository;
+import com.foxminded.appliancesshop.repositories.AdministratorRepository;
 import com.foxminded.appliancesshop.repositories.CartRepository;
 import com.foxminded.appliancesshop.repositories.CategoryRepository;
 import com.foxminded.appliancesshop.repositories.CustomerRepository;
@@ -42,6 +46,9 @@ public class Bootstrap implements CommandLineRunner {
 	@Autowired
 	private ProductRepository productRepository;
 
+	@Autowired
+	private AdministratorRepository administratorRepository;
+
 	@Override
 	public void run(String... args) throws Exception {
 		loadAdsresses();
@@ -55,8 +62,9 @@ public class Bootstrap implements CommandLineRunner {
 		addItemsToCarts();
 		System.out.println("Items added to carts");
 		addItemsToDeferreds();
-		// deferredsLoading();
 		System.out.println("Items added to deferreds");
+		loadAdministrators();
+		System.out.println("Administrator added to deferreds");
 	}
 
 	private void loadAdsresses() {
@@ -96,8 +104,10 @@ public class Bootstrap implements CommandLineRunner {
 			customer = new Customer();
 			customer.setFirstName(firstNames.get(i));
 			customer.setLastName(lastNames.get(i));
-			customer.setPassword("password");
+			customer.setPassword("customer");
 			customer.setEmail(emails.get(i));
+			customer.setRole(Role.CUSTOMER);
+			customer.setStatus(Status.ACTIVE);
 			Address address = addressRepository.findById(Long.valueOf(i + 1)).get();
 			customer.setAddress(address);
 			Cart cart = cartRepository.save(new Cart());
@@ -110,6 +120,24 @@ public class Bootstrap implements CommandLineRunner {
 			cart.setCustomer(savedCustomer);
 			cartRepository.save(cart);
 		}
+	}
+
+	private void loadAdministrators() {
+		List<String> firstNames = Arrays.asList("Thibaud", "Gayla");
+		List<String> lastNames = Arrays.asList("Minchindon", "Meller");
+		List<String> emails = Arrays.asList("tminchindon0@mozilla.org", "gmeller1@storify.com");
+		Administrator administrator;
+		for (int i = 0; i < 2; i++) {
+			administrator = new Administrator();
+			administrator.setFirstName(firstNames.get(i));
+			administrator.setLastName(lastNames.get(i));
+			administrator.setEmail(emails.get(i));
+			administrator.setPassword("administrator");
+			administrator.setRole(Role.ADMINISTRATOR);
+			administrator.setStatus(Status.ACTIVE);
+			administratorRepository.save(administrator);
+		}
+
 	}
 
 	private void loadCategories() {

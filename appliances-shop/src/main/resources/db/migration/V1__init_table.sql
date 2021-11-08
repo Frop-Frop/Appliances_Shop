@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS deferreds;
+DROP TABLE IF EXISTS administrator;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS item;
 DROP TABLE IF EXISTS product;
@@ -17,6 +18,16 @@ CREATE TABLE customer(
   last_name VARCHAR(50) NOT NULL,
   address_id BIGINT,
   cart_id BIGINT,
+  email VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL,
+  role VARCHAR(10) NOT NULL,
+  status VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE administrator(
+  id BIGSERIAL NOT NULL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
   email VARCHAR(50) NOT NULL,
   password VARCHAR(50) NOT NULL,
   role VARCHAR(10) NOT NULL,

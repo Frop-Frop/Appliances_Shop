@@ -14,7 +14,6 @@ import com.foxminded.appliancesshop.mappers.ProductMapper;
 import com.foxminded.appliancesshop.model.ProductDTO;
 import com.foxminded.appliancesshop.model.ProductListDTO;
 import com.foxminded.appliancesshop.repositories.CategoryRepository;
-import com.foxminded.appliancesshop.repositories.CustomerRepository;
 import com.foxminded.appliancesshop.repositories.ProductRepository;
 
 @Service
@@ -28,9 +27,6 @@ public class ProductService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
-
-	@Autowired
-	private CustomerRepository customerRepository;
 
 	public ProductListDTO getAllProducts() {
 		return new ProductListDTO(productRepository.findAll().stream().map(productMapper::productToProductDTO)
@@ -80,10 +76,11 @@ public class ProductService {
 	}
 
 	public ProductDTO saveProductByDTO(Long id, ProductDTO productDTO) {
-		Product product = productRepository.findById(id).get();
-		if (product == null) {
-			throw new ResourseNotFoundException();
+		Optional<Product> optionalProduct = productRepository.findById(id);
+		if (optionalProduct.isEmpty()) {
+			throw new ResourseNotFoundException("Product with id: " + id + " not found");
 		}
+		Product product = optionalProduct.get();
 		product = productMapper.productDTOtoProduct(productDTO);
 		product.setId(id);
 		return productMapper.productToProductDTO(productRepository.save(product));
