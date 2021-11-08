@@ -18,7 +18,9 @@ CREATE TABLE customer(
   address_id BIGINT,
   cart_id BIGINT,
   email VARCHAR(50) NOT NULL,
-  password VARCHAR(50) NOT NULL
+  password VARCHAR(50) NOT NULL,
+  role VARCHAR(10) NOT NULL,
+  status VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE cart(

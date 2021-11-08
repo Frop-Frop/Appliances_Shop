@@ -9,6 +9,8 @@ import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +19,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.foxminded.appliancesshop.domain.security.Role;
+import com.foxminded.appliancesshop.domain.security.Status;
+import com.foxminded.appliancesshop.domain.security.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +34,7 @@ import lombok.ToString;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class Customer extends User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +54,11 @@ public class Customer {
 	private Set<Item> deferreds = new HashSet<>();
 	@OneToOne
 	private Address address;
+
+	@Enumerated(value = EnumType.STRING)
+	private Role role;
+	@Enumerated(value = EnumType.STRING)
+	private Status status;
 
 	public void addItemToDeferreds(Item item) {
 		deferreds.add(item);
@@ -81,8 +92,7 @@ public class Customer {
 	}
 
 	public Customer(Long id, String firstName, String lastName, String email, String password, Cart cart,
-			Set<Item> deferreds) {
-		super();
+			Set<Item> deferreds, Role role, Status status) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -90,6 +100,8 @@ public class Customer {
 		this.password = password;
 		this.cart = cart;
 		this.deferreds = deferreds;
+		this.role = role;
+		this.status = status;
 	}
 
 }

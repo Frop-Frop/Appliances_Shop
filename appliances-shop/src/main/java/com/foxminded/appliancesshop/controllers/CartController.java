@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ public class CartController {
 	private CartService cartService;
 
 	@GetMapping("{id}")
+	@PreAuthorize("hasAuthority('read')")
 	public ResponseEntity<CartDTO> getCartById(@PathVariable Long id) {
 		return new ResponseEntity<CartDTO>(cartService.getCartById(id), HttpStatus.OK);
 	}

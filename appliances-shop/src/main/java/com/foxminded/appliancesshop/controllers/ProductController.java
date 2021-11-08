@@ -34,14 +34,9 @@ public class ProductController {
 		return new ResponseEntity<ProductDTO>(productService.getProductById(id), HttpStatus.OK);
 	}
 
-	@GetMapping("product/{name}")
+	@GetMapping("name/{name}")
 	public ResponseEntity<ProductDTO> getProductByName(@PathVariable String name) {
 		return new ResponseEntity<ProductDTO>(productService.getProductByName(name), HttpStatus.OK);
-	}
-
-	@GetMapping("customer/{id}")
-	public ResponseEntity<ProductListDTO> getAllProductsInCustomerDeferreds(@PathVariable Long id) {
-		return new ResponseEntity<ProductListDTO>(productService.getAllProductsInCategory(id), HttpStatus.OK);
 	}
 
 	@GetMapping("brand/{name}")

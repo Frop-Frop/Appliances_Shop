@@ -35,7 +35,7 @@ public class CustomerMapper {
 		CustomerDTO customerDTO = new CustomerDTO(customer.getId(), customer.getFirstName(), customer.getLastName(),
 				customer.getEmail(), customer.getPassword(), cartDTO, new ItemListDTO(customer.getDeferredsList()
 						.stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList())),
-				addressDTO);
+				addressDTO, customer.getRole(), customer.getStatus());
 		return customerDTO;
 	}
 
@@ -50,33 +50,8 @@ public class CustomerMapper {
 		Set<Item> items = new HashSet<>();
 		customerDTO.getDeferreds().getItems().stream().map(itemMapper::itemDTOtoItem).forEach(items::add);
 		Customer customer = new Customer(customerDTO.getId(), customerDTO.getFirstName(), customerDTO.getFirstName(),
-				customerDTO.getEmail(), customerDTO.getPassword(), cart, items, address);
-		return customer;
-	}
-
-	public CustomerDTO customerToCustomerDTOWithoutAddress(Customer customer) {
-		if (customer == null) {
-			return null;
-		}
-		CartDTO cartDTO = new CartDTO(customer.getCart().getId(),
-				customer.getCart().getItemsList().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
-		CustomerDTO customerDTO = new CustomerDTO(customer.getId(), customer.getFirstName(), customer.getLastName(),
-				customer.getEmail(), customer.getPassword(), cartDTO, new ItemListDTO(customer.getDeferredsList()
-						.stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList())));
-		return customerDTO;
-	}
-
-	public Customer customerDTOtoCustomerWithoutAddress(CustomerDTO customerDTO) {
-		if (customerDTO == null) {
-			return null;
-		}
-		Set<Item> cartItems = customerDTO.getCart().getItems().getItems().stream().map(itemMapper::itemDTOtoItem)
-				.collect(Collectors.toSet());
-		Cart cart = new Cart(customerDTO.getCart().getId(), cartItems);
-		Set<Item> items = new HashSet<>();
-		customerDTO.getDeferreds().getItems().stream().map(itemMapper::itemDTOtoItem).forEach(items::add);
-		Customer customer = new Customer(customerDTO.getId(), customerDTO.getFirstName(), customerDTO.getFirstName(),
-				customerDTO.getEmail(), customerDTO.getPassword(), cart, items);
+				customerDTO.getEmail(), customerDTO.getPassword(), cart, items, address, customerDTO.getRole(),
+				customerDTO.getStatus());
 		return customer;
 	}
 
