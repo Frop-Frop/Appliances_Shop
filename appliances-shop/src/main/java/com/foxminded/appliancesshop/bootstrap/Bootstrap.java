@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.foxminded.appliancesshop.domain.Address;
@@ -48,6 +49,9 @@ public class Bootstrap implements CommandLineRunner {
 
 	@Autowired
 	private AdministratorRepository administratorRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -104,7 +108,7 @@ public class Bootstrap implements CommandLineRunner {
 			customer = new Customer();
 			customer.setFirstName(firstNames.get(i));
 			customer.setLastName(lastNames.get(i));
-			customer.setPassword("customer");
+			customer.setPassword(passwordEncoder.encode("customer"));
 			customer.setEmail(emails.get(i));
 			customer.setRole(Role.CUSTOMER);
 			customer.setStatus(Status.ACTIVE);
@@ -132,7 +136,7 @@ public class Bootstrap implements CommandLineRunner {
 			administrator.setFirstName(firstNames.get(i));
 			administrator.setLastName(lastNames.get(i));
 			administrator.setEmail(emails.get(i));
-			administrator.setPassword("administrator");
+			administrator.setPassword(passwordEncoder.encode("administrator"));
 			administrator.setRole(Role.ADMINISTRATOR);
 			administrator.setStatus(Status.ACTIVE);
 			administratorRepository.save(administrator);

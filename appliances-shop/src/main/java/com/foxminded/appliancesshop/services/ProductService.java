@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.appliancesshop.domain.Category;
 import com.foxminded.appliancesshop.domain.Product;
@@ -14,6 +15,7 @@ import com.foxminded.appliancesshop.mappers.ProductMapper;
 import com.foxminded.appliancesshop.model.ProductDTO;
 import com.foxminded.appliancesshop.model.ProductListDTO;
 import com.foxminded.appliancesshop.repositories.CategoryRepository;
+import com.foxminded.appliancesshop.repositories.ItemRepository;
 import com.foxminded.appliancesshop.repositories.ProductRepository;
 
 @Service
@@ -27,6 +29,9 @@ public class ProductService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private ItemRepository itemRepository;
 
 	public ProductListDTO getAllProducts() {
 		return new ProductListDTO(productRepository.findAll().stream().map(productMapper::productToProductDTO)
@@ -113,7 +118,9 @@ public class ProductService {
 		return productMapper.productToProductDTO(productRepository.save(product));
 	}
 
+	@Transactional
 	public void deleteById(Long id) {
+		itemRepository.deleteItemsByProduct(id);//
 		Product product = productRepository.getById(id);
 		productRepository.delete(product);
 	}
