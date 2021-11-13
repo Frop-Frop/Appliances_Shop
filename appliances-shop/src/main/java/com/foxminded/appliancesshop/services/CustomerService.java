@@ -70,11 +70,12 @@ public class CustomerService {
 	}
 
 	public CustomerDTO saveCustomerByDTO(Long id, CustomerDTO customerDTO) {
-		Customer customer = customerRepository.findById(id).get();
-		if (customer == null) {
+		Optional<Customer> optionalCustomer = customerRepository.findById(id);
+		if (optionalCustomer.isEmpty()) {
 			throw new ResourseNotFoundException();
 		}
-		Cart cart = customerRepository.getById(id).getCart();
+		Customer customer = optionalCustomer.get();
+		Cart cart = customer.getCart();
 		cartService.saveCartByDTO(cart.getId(), customerDTO.getCart());
 		customer = customerMapper.customerDTOtoCustomer(customerDTO);
 		customer.setId(id);

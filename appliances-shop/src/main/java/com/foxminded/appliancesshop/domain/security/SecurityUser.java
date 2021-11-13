@@ -56,7 +56,7 @@ public class SecurityUser implements UserDetails {
 		return email;
 	}
 
-	public static UserDetails fromStudent(Customer customer) {
+	public static UserDetails fromCustomer(Customer customer) {
 		return new org.springframework.security.core.userdetails.User(customer.getEmail(), customer.getPassword(),
 				customer.getStatus().equals(Status.ACTIVE), customer.getStatus().equals(Status.ACTIVE),
 				customer.getStatus().equals(Status.ACTIVE), customer.getStatus().equals(Status.ACTIVE),

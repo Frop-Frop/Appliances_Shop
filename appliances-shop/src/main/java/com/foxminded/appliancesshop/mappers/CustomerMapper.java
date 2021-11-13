@@ -49,7 +49,7 @@ public class CustomerMapper {
 		Address address = addressMapper.addressDTOtoAddressWithoutCustomer(customerDTO.getAddress());
 		Set<Item> items = new HashSet<>();
 		customerDTO.getDeferreds().getItems().stream().map(itemMapper::itemDTOtoItem).forEach(items::add);
-		Customer customer = new Customer(customerDTO.getId(), customerDTO.getFirstName(), customerDTO.getFirstName(),
+		Customer customer = new Customer(customerDTO.getId(), customerDTO.getFirstName(), customerDTO.getLastName(),
 				customerDTO.getEmail(), customerDTO.getPassword(), cart, items, address, customerDTO.getRole(),
 				customerDTO.getStatus());
 		return customer;

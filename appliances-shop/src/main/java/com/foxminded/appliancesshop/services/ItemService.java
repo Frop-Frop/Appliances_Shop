@@ -33,8 +33,8 @@ public class ItemService {
 	private CustomerRepository customerRepository;
 
 	public ItemListDTO getAllItemsInCart(Long id) {
-		return new ItemListDTO(
-				itemRepository.findAll().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
+		return new ItemListDTO(itemRepository.findAllItemsInCart(id).stream().map(itemMapper::itemToItemDTO)
+				.collect(Collectors.toList()));
 	}
 
 	public ItemListDTO getCustomerDeferreds(Long id) {
@@ -74,7 +74,7 @@ public class ItemService {
 			item.setProduct(productRepository.getById(itemDTO.getProduct().getId()));
 		}
 		if (item.getCart() == null) {
-			item.setCart(cartRepository.findById(itemDTO.getCartId()).get());
+			item.setCart(cartRepository.getById(itemDTO.getCartId()));
 		}
 		if (item.getCustomer() == null) {
 			item.setCustomer(customerRepository.getById(itemDTO.getCustomerId()));

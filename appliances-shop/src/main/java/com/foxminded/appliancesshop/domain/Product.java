@@ -1,5 +1,7 @@
 package com.foxminded.appliancesshop.domain;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,6 +50,21 @@ public class Product implements Comparable<Product> {
 		this.price = price;
 		this.brand = brand;
 		this.description = description;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		return Objects.equals(brand, other.brand) && Objects.equals(category.getId(), other.category.getId())
+				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(item, other.item) && Objects.equals(name, other.name)
+				&& Objects.equals(price, other.price);
 	}
 
 }

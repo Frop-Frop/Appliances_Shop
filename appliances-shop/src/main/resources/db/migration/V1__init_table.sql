@@ -19,8 +19,8 @@ CREATE TABLE customer(
   address_id BIGINT,
   cart_id BIGINT,
   email VARCHAR(50) NOT NULL,
-  password VARCHAR(50) NOT NULL,
-  role VARCHAR(10) NOT NULL,
+  password VARCHAR(64) NOT NULL,
+  role VARCHAR(32) NOT NULL,
   status VARCHAR(10) NOT NULL
 );
 
@@ -29,8 +29,8 @@ CREATE TABLE administrator(
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   email VARCHAR(50) NOT NULL,
-  password VARCHAR(50) NOT NULL,
-  role VARCHAR(10) NOT NULL,
+  password VARCHAR(64) NOT NULL,
+  role VARCHAR(32) NOT NULL,
   status VARCHAR(10) NOT NULL
 );
 
@@ -54,12 +54,13 @@ CREATE TABLE product(
   category_id BIGINT REFERENCES category(id),
   description VARCHAR(255),
   brand VARCHAR(50),
-  price BIGINT NOT NULL
+  price INTEGER NOT NULL
 );
 CREATE TABLE item(
   id BIGSERIAL NOT NULL PRIMARY KEY,
-  quantity BIGINT NOT NULL,
+  quantity INTEGER NOT NULL,
   product_id BIGINT REFERENCES product(id) ON DELETE CASCADE,
+  customer_id BIGINT REFERENCES customer(id) ON DELETE CASCADE,
   cart_id BIGINT REFERENCES cart(id) ON DELETE CASCADE
 );
 CREATE TABLE deferreds(

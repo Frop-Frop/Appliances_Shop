@@ -69,7 +69,8 @@ public class ProductService {
 		subCategories.stream().forEach(allSubCategories::add);
 		List<ProductDTO> products = new ArrayList<>();
 		allSubCategories.stream().forEach(subcategory -> {
-			getAllProductsInCategory(subcategory.getId()).getProducts().forEach(products::add);
+			subcategory.getProducts().stream().map(product -> productMapper.productToProductDTO(product))
+					.forEach(products::add);
 		});
 		return new ProductListDTO(products);
 	}

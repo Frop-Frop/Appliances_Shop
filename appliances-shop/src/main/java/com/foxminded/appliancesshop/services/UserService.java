@@ -1,5 +1,7 @@
 package com.foxminded.appliancesshop.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +14,7 @@ import com.foxminded.appliancesshop.domain.security.SecurityUser;
 import com.foxminded.appliancesshop.repositories.AdministratorRepository;
 import com.foxminded.appliancesshop.repositories.CustomerRepository;
 
-@Service("userDetailsServiceImpl")
+@Service("userDetailsService")
 public class UserService implements UserDetailsService {
 
 	@Autowired
@@ -23,14 +25,15 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		if (administratorRepository.findByEmail(email).isPresent()) {
-			Administrator administrator = administratorRepository.findByEmail(email).get();
+		Optional<Administrator> optionalAdmin = administratorRepository.findByEmail(email);
+		if (optionalAdmin.isPresent()) {
+			Administrator administrator = optionalAdmin.get();
 			return SecurityUser.fromAdministrator(administrator);
 		}
 
 		Customer customer = customerRepository.findByEmail(email)
 				.orElseThrow(() -> new ResourseNotFoundException("User doesn't exists"));
-		return SecurityUser.fromStudent(customer);
+		return SecurityUser.fromCustomer(customer);
 
 	}
 

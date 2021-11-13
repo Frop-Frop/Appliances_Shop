@@ -1,5 +1,6 @@
 package com.foxminded.appliancesshop.services;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,19 @@ public class CategoryService {
 	}
 
 	public CategoryDTO getCategoryById(Long id) {
-		return categoryMapper.categoryToCategoryDTO(categoryRepository.findById(id).get());
+		Optional<Category> category = categoryRepository.findById(id);
+		if (category.isEmpty()) {
+			throw new ResourseNotFoundException("Category with id: " + id + " not found");
+		}
+		return categoryMapper.categoryToCategoryDTO(category.get());
 	}
 
 	public CategoryDTO getCategoryByName(String name) {
-		return categoryMapper.categoryToCategoryDTO(categoryRepository.findByName(name).get());
+		Optional<Category> category = categoryRepository.findByName(name);
+		if (category.isEmpty()) {
+			throw new ResourseNotFoundException("Category with name: " + name + " not found");
+		}
+		return categoryMapper.categoryToCategoryDTO(category.get());
 	}
 
 	public CategoryListDTO getSubCategories(Long id) {
@@ -49,10 +58,11 @@ public class CategoryService {
 	}
 
 	public CategoryDTO saveCategoryByDTO(Long id, CategoryDTO categoryDTO) {
-		Category category = categoryRepository.findById(id).get();
-		if (category == null) {
-			throw new ResourseNotFoundException();
+		Optional<Category> optionalCategory = categoryRepository.findById(id);
+		if (optionalCategory.isEmpty()) {
+			throw new ResourseNotFoundException("Category with id: " + id + " not found");
 		}
+		Category category = optionalCategory.get();
 		category = categoryMapper.categoryDTOtoCategory(categoryDTO);
 		category.setId(id);
 		return categoryMapper.categoryToCategoryDTO(categoryRepository.save(category));
