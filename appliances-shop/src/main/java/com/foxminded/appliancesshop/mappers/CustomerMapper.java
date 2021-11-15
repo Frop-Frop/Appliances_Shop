@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.foxminded.appliancesshop.domain.Address;
@@ -25,6 +26,9 @@ public class CustomerMapper {
 	@Autowired
 	private ItemMapper itemMapper;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public CustomerDTO customerToCustomerDTO(Customer customer) {
 		if (customer == null) {
 			return null;
@@ -33,7 +37,7 @@ public class CustomerMapper {
 				customer.getCart().getItemsList().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
 		AddressDTO addressDTO = addressMapper.addressToAddressDTOWithoutCustomer(customer.getAddress());
 		CustomerDTO customerDTO = new CustomerDTO(customer.getId(), customer.getFirstName(), customer.getLastName(),
-				customer.getEmail(), customer.getPassword(), cartDTO, new ItemListDTO(customer.getDeferredsList()
+				customer.getEmail(), "password is not displayed", cartDTO, new ItemListDTO(customer.getDeferredsList()
 						.stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList())),
 				addressDTO, customer.getRole(), customer.getStatus());
 		return customerDTO;
@@ -50,8 +54,8 @@ public class CustomerMapper {
 		Set<Item> items = new HashSet<>();
 		customerDTO.getDeferreds().getItems().stream().map(itemMapper::itemDTOtoItem).forEach(items::add);
 		Customer customer = new Customer(customerDTO.getId(), customerDTO.getFirstName(), customerDTO.getLastName(),
-				customerDTO.getEmail(), customerDTO.getPassword(), cart, items, address, customerDTO.getRole(),
-				customerDTO.getStatus());
+				customerDTO.getEmail(), passwordEncoder.encode(customerDTO.getPassword()), cart, items, address,
+				customerDTO.getRole(), customerDTO.getStatus());
 		return customer;
 	}
 

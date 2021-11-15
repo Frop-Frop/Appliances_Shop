@@ -82,18 +82,23 @@ class CustomerControllerTest {
 				.andExpect(status().isOk());
 	}
 
+	// Doesn't work
 	@WithMockUser(username = "bfarfalameev0@gizmodo.com", authorities = "act")
 	@Test
 	public void createNewCustomerTest() throws Exception {
 
-		CustomerDTO customerDTO = new CustomerDTO(1L, "John", "Johns", "email", "password", null, null, Role.CUSTOMER,
+		CustomerDTO customerDTO = new CustomerDTO(null, "John", "Johns", "email", "password", null, null, Role.CUSTOMER,
 				Status.ACTIVE);
 
-		when(customerService.createNewCustomer(customerDTO)).thenReturn(customerDTO);
+		CustomerDTO savedDTO = new CustomerDTO(1L, "John", "Johns", "email", "password", null, null, Role.CUSTOMER,
+				Status.ACTIVE);
 
-		mockMvc.perform(post("/university/students/").contentType(MediaType.APPLICATION_JSON).param("firstName", "John")
-				.param("lastName", "Johns").param("email", "email").param("password", "password")
-				.param("action", "post")).andExpect(status().isCreated());
+		when(customerService.createNewCustomer(customerDTO)).thenReturn(savedDTO);
+
+		mockMvc.perform(
+				post("/appliances/customers/").contentType(MediaType.APPLICATION_JSON).param("firstName", "John")
+						.param("lastName", "Johns").param("email", "email").param("password", "password"))
+				.andExpect(status().isOk());
 	}
 
 }
