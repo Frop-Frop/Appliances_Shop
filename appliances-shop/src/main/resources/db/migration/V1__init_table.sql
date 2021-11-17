@@ -54,14 +54,21 @@ CREATE TABLE product(
   category_id BIGINT REFERENCES category(id),
   description VARCHAR(255),
   brand VARCHAR(50),
-  price INTEGER NOT NULL
+  price INTEGER NOT NULL,
+  units_left_in_warehouse INTEGER NOT NULL
+);
+CREATE TABLE orders(
+  id BIGSERIAL NOT NULL PRIMARY KEY,
+  cart_id BIGINT REFERENCES cart(id) ON DELETE CASCADE,
+  data TIMESTAMP NOT NULL,
 );
 CREATE TABLE item(
   id BIGSERIAL NOT NULL PRIMARY KEY,
   quantity INTEGER NOT NULL,
   product_id BIGINT REFERENCES product(id) ON DELETE CASCADE,
   customer_id BIGINT REFERENCES customer(id) ON DELETE CASCADE,
-  cart_id BIGINT REFERENCES cart(id) ON DELETE CASCADE
+  cart_id BIGINT REFERENCES cart(id) ON DELETE CASCADE,
+  order_id BIGINT REFERENCES orders(id) ON DELETE CASCADE
 );
 CREATE TABLE deferreds(
   customer_id BIGINT REFERENCES customer(id) ON DELETE CASCADE,

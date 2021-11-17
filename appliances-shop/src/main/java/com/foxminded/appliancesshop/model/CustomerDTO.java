@@ -21,6 +21,7 @@ public class CustomerDTO {
 	private String email;
 	private String password;
 	private CartDTO cart;
+	private OrderDTO order;
 	private ItemListDTO deferreds;
 	private AddressDTO address;
 	@Enumerated(value = EnumType.STRING)
@@ -29,7 +30,7 @@ public class CustomerDTO {
 	private Status status;
 
 	public CustomerDTO(Long id, String firstName, String lastName, String email, String password, CartDTO cart,
-			ItemListDTO deferreds, Role role, Status status) {
+			OrderDTO order, ItemListDTO deferreds, Role role, Status status) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -38,6 +39,7 @@ public class CustomerDTO {
 		this.deferreds = deferreds;
 		this.role = role;
 		this.status = status;
+		this.order = order;
 	}
 
 }

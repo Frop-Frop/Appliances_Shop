@@ -37,6 +37,11 @@ public class ItemService {
 				.collect(Collectors.toList()));
 	}
 
+	public ItemListDTO getAllItemsInOrder(Long id) {
+		return new ItemListDTO(itemRepository.findAllItemsInOrder(id).stream().map(itemMapper::itemToItemDTO)
+				.collect(Collectors.toList()));
+	}
+
 	public ItemListDTO getCustomerDeferreds(Long id) {
 		return new ItemListDTO(itemRepository.findCustomerDeferreds(id).stream().map(itemMapper::itemToItemDTO)
 				.collect(Collectors.toList()));

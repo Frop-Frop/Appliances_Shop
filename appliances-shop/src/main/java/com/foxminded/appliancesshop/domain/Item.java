@@ -30,6 +30,9 @@ public class Item implements Comparable<Item> {
 	private Cart cart;
 
 	@ManyToOne
+	private Order order;
+
+	@ManyToOne
 	@JoinTable(name = "deferreds", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
 	private Customer customer;
 

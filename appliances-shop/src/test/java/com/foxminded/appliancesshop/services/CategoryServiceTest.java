@@ -172,10 +172,10 @@ class CategoryServiceTest {
 		Category superCategory = new Category();
 		superCategory.setId(3L);
 		when(categoryRepository.getById(1L)).thenReturn(category);
-		ProductDTO productDTO1 = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description");
-		ProductDTO productDTO2 = new ProductDTO(2L, "Product 1", 1L, 1234, "Brand", "Description1");
-		Product product = new Product(1L, "Product", category, 123, "Brand", "Description");
-		Product product1 = new Product(2L, "Product 1", category, 1234, "Brand", "Description1");
+		ProductDTO productDTO1 = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description", 100);
+		ProductDTO productDTO2 = new ProductDTO(2L, "Product 1", 1L, 1234, "Brand", "Description1", 100);
+		Product product = new Product(1L, "Product", category, 123, "Brand", "Description", 100);
+		Product product1 = new Product(2L, "Product 1", category, 1234, "Brand", "Description1", 100);
 		List<ProductDTO> productDTOlist = Arrays.asList(productDTO1, productDTO2);
 		CategoryDTO superCategoryDTO = new CategoryDTO();
 		superCategoryDTO.setId(3L);

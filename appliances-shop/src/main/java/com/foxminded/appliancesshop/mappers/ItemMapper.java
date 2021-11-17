@@ -8,12 +8,13 @@ import org.springframework.stereotype.Component;
 import com.foxminded.appliancesshop.domain.Cart;
 import com.foxminded.appliancesshop.domain.Customer;
 import com.foxminded.appliancesshop.domain.Item;
+import com.foxminded.appliancesshop.domain.Order;
 import com.foxminded.appliancesshop.domain.Product;
 import com.foxminded.appliancesshop.model.ItemDTO;
 import com.foxminded.appliancesshop.model.ProductDTO;
 import com.foxminded.appliancesshop.repositories.CartRepository;
 import com.foxminded.appliancesshop.repositories.CustomerRepository;
-import com.foxminded.appliancesshop.services.ResourseNotFoundException;
+import com.foxminded.appliancesshop.repositories.OrderRepository;
 
 @Component
 public class ItemMapper {
@@ -24,6 +25,8 @@ public class ItemMapper {
 	private CartRepository cartRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
+	@Autowired
+	private OrderRepository orderRepository;
 
 	public ItemDTO itemToItemDTO(Item item) {
 		if (item == null) {
@@ -38,7 +41,12 @@ public class ItemMapper {
 		if (item.getCart() != null) {
 			cartId = item.getCart().getId();
 		}
-		ItemDTO itemDTO = new ItemDTO(item.getId(), item.getQuantity(), productDTO, cartId, customerId, item.getCost());
+		Long orderId = null;
+		if (item.getCart() != null) {
+			orderId = item.getOrder().getId();
+		}
+		ItemDTO itemDTO = new ItemDTO(item.getId(), item.getQuantity(), productDTO, cartId, customerId, orderId,
+				item.getCost());
 		return itemDTO;
 	}
 
@@ -47,15 +55,22 @@ public class ItemMapper {
 			return null;
 		}
 		Product product = productMapper.productDTOtoProduct(itemDTO.getProduct());
-		Optional<Cart> cart = cartRepository.findById(itemDTO.getCartId());
-		if (cart.isEmpty()) {
-			throw new ResourseNotFoundException("Cart with id: " + itemDTO.getCartId() + "not found");
+		Optional<Cart> optionalCart = cartRepository.findById(itemDTO.getCartId());
+		Cart cart = null;
+		if (optionalCart.isPresent()) {
+			cart = optionalCart.get();
 		}
-		Optional<Customer> customer = customerRepository.findById(itemDTO.getCustomerId());
-		if (customer.isEmpty()) {
-			throw new ResourseNotFoundException("Customer with id: " + itemDTO.getCustomerId() + "not found");
+		Optional<Order> optionalOrder = orderRepository.findById(itemDTO.getOrderId());
+		Order order = null;
+		if (optionalOrder.isPresent()) {
+			order = optionalOrder.get();
 		}
-		Item item = new Item(itemDTO.getId(), itemDTO.getQuantity(), product, cart.get(), customer.get());
+		Optional<Customer> optionalCustomer = customerRepository.findById(itemDTO.getCustomerId());
+		Customer customer = null;
+		if (optionalCustomer.isEmpty()) {
+			customer = optionalCustomer.get();
+		}
+		Item item = new Item(itemDTO.getId(), itemDTO.getQuantity(), product, cart, order, customer);
 		return item;
 	}
 }

@@ -46,6 +46,8 @@ public class Customer extends User {
 
 	@OneToOne
 	private Cart cart;
+	@OneToOne
+	private Order order;
 
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
@@ -91,7 +93,7 @@ public class Customer extends User {
 		return result;
 	}
 
-	public Customer(Long id, String firstName, String lastName, String email, String password, Cart cart,
+	public Customer(Long id, String firstName, String lastName, String email, String password, Cart cart, Order order,
 			Set<Item> deferreds, Role role, Status status) {
 		this.id = id;
 		this.firstName = firstName;
@@ -102,6 +104,7 @@ public class Customer extends User {
 		this.deferreds = deferreds;
 		this.role = role;
 		this.status = status;
+		this.order = order;
 	}
 
 }

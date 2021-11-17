@@ -167,8 +167,8 @@ class CustomerServiceTest {
 		Address address = new Address();
 		address.setCountry("Country");
 		address.setId(1L);
-		Product product1 = new Product(1L, "Product", null, 123, "Brand", "Description");
-		Product product2 = new Product(2L, "Product 1", null, 1234, "Brand", "Description1");
+		Product product1 = new Product(1L, "Product", null, 123, "Brand", "Description", 100);
+		Product product2 = new Product(2L, "Product 1", null, 1234, "Brand", "Description1", 100);
 		Item item1 = new Item();
 		item1.setProduct(product1);
 		item1.setId(1L);
@@ -186,8 +186,8 @@ class CustomerServiceTest {
 		customer.setAddress(address);
 		customer.setId(1L);
 		when(customerRepository.getById(1L)).thenReturn(customer);
-		ProductDTO productDTO1 = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description");
-		ProductDTO productDTO2 = new ProductDTO(2L, "Product 1", 1L, 1234, "Brand", "Description1");
+		ProductDTO productDTO1 = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description", 100);
+		ProductDTO productDTO2 = new ProductDTO(2L, "Product 1", 1L, 1234, "Brand", "Description1", 100);
 		List<ProductDTO> productDTOlist = Arrays.asList(productDTO1, productDTO2);
 		CartDTO cartDTO = new CartDTO();
 		cartDTO.setId(1l);

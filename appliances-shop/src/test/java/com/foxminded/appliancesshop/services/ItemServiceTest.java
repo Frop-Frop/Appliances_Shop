@@ -153,8 +153,8 @@ class ItemServiceTest {
 		item.setId(1L);
 		when(itemRepository.getById(1L)).thenReturn(item);
 		Item itemWithId = new Item();
-		ProductDTO productDTO = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description");
-		Product product = new Product(1L, "Product", null, 123, "Brand", "Description");
+		ProductDTO productDTO = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description", 100);
+		Product product = new Product(1L, "Product", null, 123, "Brand", "Description", 100);
 		ItemDTO itemDTO = new ItemDTO();
 		itemDTO.setCartId(1L);
 		itemDTO.setCost(246);

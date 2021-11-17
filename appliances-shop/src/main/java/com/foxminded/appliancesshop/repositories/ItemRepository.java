@@ -20,6 +20,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 	@Query(value = "SELECT * FROM item WHERE cart_id = :id", nativeQuery = true)
 	List<Item> findAllItemsInCart(@Param("id") Long id);
 
+	@Query(value = "SELECT * FROM item WHERE order_id = :id", nativeQuery = true)
+	List<Item> findAllItemsInOrder(@Param("id") Long id);
+
 	@Transactional
 	@Modifying
 	@Query(value = "DELETE FROM item WHERE item.product_id = :id", nativeQuery = true)

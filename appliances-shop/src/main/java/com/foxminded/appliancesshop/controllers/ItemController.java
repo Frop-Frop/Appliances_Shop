@@ -31,6 +31,12 @@ public class ItemController {
 		return new ResponseEntity<ItemListDTO>(itemService.getAllItemsInCart(cartId), HttpStatus.OK);
 	}
 
+	@GetMapping("order/{orderId}")
+	@PreAuthorize("hasAuthority('act')")
+	public ResponseEntity<ItemListDTO> getAllItemsInOrder(@PathVariable Long orderId) {
+		return new ResponseEntity<ItemListDTO>(itemService.getAllItemsInOrder(orderId), HttpStatus.OK);
+	}
+
 	@GetMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<ItemDTO> getItemById(@PathVariable Long id) {

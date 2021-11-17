@@ -22,7 +22,7 @@ public class ProductMapper {
 			return null;
 		}
 		ProductDTO productDTO = new ProductDTO(product.getId(), product.getName(), product.getCategory().getId(),
-				product.getPrice(), product.getBrand(), product.getDescription());
+				product.getPrice(), product.getBrand(), product.getDescription(), product.getUnitsLeftInWarehouse());
 		return productDTO;
 	}
 
@@ -35,7 +35,7 @@ public class ProductMapper {
 			throw new ResourseNotFoundException("Category with id: " + productDTO.getCategoryId() + " not found");
 		}
 		Product product = new Product(productDTO.getId(), productDTO.getName(), category.get(), productDTO.getPrice(),
-				productDTO.getBrand(), productDTO.getDescription());
+				productDTO.getBrand(), productDTO.getDescription(), productDTO.getUnitsLeftInWarehouse());
 		return product;
 	}
 

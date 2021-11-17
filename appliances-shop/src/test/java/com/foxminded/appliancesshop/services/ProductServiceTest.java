@@ -291,8 +291,8 @@ class ProductServiceTest {
 		Category category = new Category();
 		category.setId(1l);
 		Product productWithoutId = new Product();
-		ProductDTO productDTO = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description");
-		Product product = new Product(1L, "Product", category, 123, "Brand", "Description");
+		ProductDTO productDTO = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description", 100);
+		Product product = new Product(1L, "Product", category, 123, "Brand", "Description", 100);
 		when(productRepository.getById(1L)).thenReturn(productWithoutId);
 		when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
 		when(productMapper.productToProductDTO(product)).thenReturn(productDTO);

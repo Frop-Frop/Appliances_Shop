@@ -13,6 +13,7 @@ public class ItemDTO {
 	private Integer quantity;
 	private ProductDTO product;
 	private Long cartId;
+	private Long orderId;
 	private Long customerId;
 	private Integer cost;
 

@@ -12,10 +12,12 @@ import com.foxminded.appliancesshop.domain.Address;
 import com.foxminded.appliancesshop.domain.Cart;
 import com.foxminded.appliancesshop.domain.Customer;
 import com.foxminded.appliancesshop.domain.Item;
+import com.foxminded.appliancesshop.domain.Order;
 import com.foxminded.appliancesshop.model.AddressDTO;
 import com.foxminded.appliancesshop.model.CartDTO;
 import com.foxminded.appliancesshop.model.CustomerDTO;
 import com.foxminded.appliancesshop.model.ItemListDTO;
+import com.foxminded.appliancesshop.model.OrderDTO;
 
 @Component
 public class CustomerMapper {
@@ -35,10 +37,13 @@ public class CustomerMapper {
 		}
 		CartDTO cartDTO = new CartDTO(customer.getCart().getId(),
 				customer.getCart().getItemsList().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
+		OrderDTO orderDTO = new OrderDTO(customer.getOrder().getId(),
+				customer.getOrder().getItemsList().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()),
+				customer.getOrder().getData());
 		AddressDTO addressDTO = addressMapper.addressToAddressDTOWithoutCustomer(customer.getAddress());
 		CustomerDTO customerDTO = new CustomerDTO(customer.getId(), customer.getFirstName(), customer.getLastName(),
-				customer.getEmail(), "password is not displayed", cartDTO, new ItemListDTO(customer.getDeferredsList()
-						.stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList())),
+				customer.getEmail(), "password is not displayed", cartDTO, orderDTO, new ItemListDTO(customer
+						.getDeferredsList().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList())),
 				addressDTO, customer.getRole(), customer.getStatus());
 		return customerDTO;
 	}
@@ -49,12 +54,15 @@ public class CustomerMapper {
 		}
 		Set<Item> cartItems = customerDTO.getCart().getItems().getItems().stream().map(itemMapper::itemDTOtoItem)
 				.collect(Collectors.toSet());
+		Set<Item> orderItems = customerDTO.getOrder().getItems().getItems().stream().map(itemMapper::itemDTOtoItem)
+				.collect(Collectors.toSet());
 		Cart cart = new Cart(customerDTO.getCart().getId(), cartItems);
+		Order order = new Order(customerDTO.getOrder().getId(), orderItems);
 		Address address = addressMapper.addressDTOtoAddressWithoutCustomer(customerDTO.getAddress());
 		Set<Item> items = new HashSet<>();
 		customerDTO.getDeferreds().getItems().stream().map(itemMapper::itemDTOtoItem).forEach(items::add);
 		Customer customer = new Customer(customerDTO.getId(), customerDTO.getFirstName(), customerDTO.getLastName(),
-				customerDTO.getEmail(), passwordEncoder.encode(customerDTO.getPassword()), cart, items, address,
+				customerDTO.getEmail(), passwordEncoder.encode(customerDTO.getPassword()), cart, order, items, address,
 				customerDTO.getRole(), customerDTO.getStatus());
 		return customer;
 	}
