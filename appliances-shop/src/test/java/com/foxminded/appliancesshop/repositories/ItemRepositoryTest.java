@@ -6,10 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import com.foxminded.appliancesshop.domain.Customer;
 import com.foxminded.appliancesshop.domain.Item;
@@ -17,8 +16,7 @@ import com.foxminded.appliancesshop.domain.Product;
 import com.foxminded.appliancesshop.domain.security.Role;
 import com.foxminded.appliancesshop.domain.security.Status;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest()
+@DataJpaTest
 class ItemRepositoryTest {
 
 	@Autowired
@@ -34,6 +32,7 @@ class ItemRepositoryTest {
 	private CustomerRepository customerRepository;
 
 	@Test
+	@Sql(scripts = { "/sql/delete_all_item.sql" })
 	void shouldDeleteAddedToDeferredsItemByProductId() {
 		Product product = new Product();
 		product.setCategory(categoryRepository.findById(1l).get());
@@ -61,9 +60,9 @@ class ItemRepositoryTest {
 	}
 
 	@Test
+	@Sql(scripts = { "/sql/delete_all_item.sql" })
 	void shouldDeleteItemByProductId() {
 		Product product = new Product();
-		product.setCategory(categoryRepository.findById(1l).get());
 		product.setPrice(123);
 		product.setName("Product");
 		Product savedProduct = productRepository.save(product);
@@ -75,14 +74,13 @@ class ItemRepositoryTest {
 	}
 
 	@Test
+	@Sql(scripts = { "/sql/delete_all_item.sql" })
 	void findCustomerDeferredsTest() {
 		Product product = new Product();
-		product.setCategory(categoryRepository.findById(1l).get());
 		product.setName("Product");
 		product.setPrice(123);
 		Product savedProduct = productRepository.save(product);
 		Product product1 = new Product();
-		product1.setCategory(categoryRepository.findById(1l).get());
 		product1.setName("Product1");
 		product1.setPrice(1234);
 		Product savedProduct1 = productRepository.save(product1);
@@ -110,7 +108,7 @@ class ItemRepositoryTest {
 		savedItem1.setCustomer(savedCustomer);
 		savedItem1 = itemRepository.save(savedItem1);
 		List<Item> expected = Arrays.asList(savedItem, savedItem1);
-		List<Item> actual = itemRepository.findCustomerDeferreds(savedCustomer.getId());
+		List<Item> actual = itemRepository.findByCustomerId(savedCustomer.getId());
 		assertEquals(expected, actual);
 	}
 

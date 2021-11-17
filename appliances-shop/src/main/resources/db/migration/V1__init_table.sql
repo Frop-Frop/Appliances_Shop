@@ -18,6 +18,7 @@ CREATE TABLE customer(
   last_name VARCHAR(50) NOT NULL,
   address_id BIGINT,
   cart_id BIGINT,
+  order_id BIGINT,
   email VARCHAR(50) NOT NULL,
   password VARCHAR(64) NOT NULL,
   role VARCHAR(32) NOT NULL,
@@ -59,8 +60,8 @@ CREATE TABLE product(
 );
 CREATE TABLE orders(
   id BIGSERIAL NOT NULL PRIMARY KEY,
-  cart_id BIGINT REFERENCES cart(id) ON DELETE CASCADE,
-  data TIMESTAMP NOT NULL,
+  customer_id BIGINT REFERENCES customer(id) ON DELETE CASCADE,
+  data TIMESTAMP NOT NULL
 );
 CREATE TABLE item(
   id BIGSERIAL NOT NULL PRIMARY KEY,

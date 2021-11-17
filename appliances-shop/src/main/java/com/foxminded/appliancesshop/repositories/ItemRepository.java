@@ -14,14 +14,11 @@ import com.foxminded.appliancesshop.domain.Item;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-	@Query(value = "SELECT * FROM item WHERE customer_id = :id", nativeQuery = true)
-	List<Item> findCustomerDeferreds(@Param("id") Long id);
+	List<Item> findByCustomerId(Long id);
 
-	@Query(value = "SELECT * FROM item WHERE cart_id = :id", nativeQuery = true)
-	List<Item> findAllItemsInCart(@Param("id") Long id);
+	List<Item> findByCartId(Long id);
 
-	@Query(value = "SELECT * FROM item WHERE order_id = :id", nativeQuery = true)
-	List<Item> findAllItemsInOrder(@Param("id") Long id);
+	List<Item> findByOrderId(Long id);
 
 	@Transactional
 	@Modifying

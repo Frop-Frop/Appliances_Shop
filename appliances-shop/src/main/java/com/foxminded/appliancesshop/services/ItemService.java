@@ -33,17 +33,17 @@ public class ItemService {
 	private CustomerRepository customerRepository;
 
 	public ItemListDTO getAllItemsInCart(Long id) {
-		return new ItemListDTO(itemRepository.findAllItemsInCart(id).stream().map(itemMapper::itemToItemDTO)
-				.collect(Collectors.toList()));
+		return new ItemListDTO(
+				itemRepository.findByCartId(id).stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
 	}
 
 	public ItemListDTO getAllItemsInOrder(Long id) {
-		return new ItemListDTO(itemRepository.findAllItemsInOrder(id).stream().map(itemMapper::itemToItemDTO)
-				.collect(Collectors.toList()));
+		return new ItemListDTO(
+				itemRepository.findByOrderId(id).stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
 	}
 
 	public ItemListDTO getCustomerDeferreds(Long id) {
-		return new ItemListDTO(itemRepository.findCustomerDeferreds(id).stream().map(itemMapper::itemToItemDTO)
+		return new ItemListDTO(itemRepository.findByCustomerId(id).stream().map(itemMapper::itemToItemDTO)
 				.collect(Collectors.toList()));
 	}
 

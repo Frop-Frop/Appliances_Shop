@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,12 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests()
-				.antMatchers("/", "/webjars/**", "/appliances/categories/", "/appliances/categories/{id}",
-						"/appliances/categories/name/{name}", "/appliances/categories/subcategories/{id}",
-						"/appliances/products/", "/appliances/products/{id}", "/appliances/products/name/{name}",
-						"/appliances/products/brand/{name}", "/appliances/products/category/{id}",
-						"/appliances/products/super_category/{id}")
+		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/appliances/**")
 				.permitAll().anyRequest().authenticated().and().httpBasic().and().sessionManagement().disable();
 	}
 

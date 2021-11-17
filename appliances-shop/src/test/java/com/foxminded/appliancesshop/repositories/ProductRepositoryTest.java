@@ -6,16 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.foxminded.appliancesshop.domain.Category;
 import com.foxminded.appliancesshop.domain.Product;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest()
+@DataJpaTest
 class ProductRepositoryTest {
 
 	@Autowired
@@ -26,17 +23,20 @@ class ProductRepositoryTest {
 
 	@Test
 	void findAllProductsByBrandTest() {
+		Category category = new Category();
+		category.setName("Category");
+		Category savedCategory = categoryRepository.save(category);
 		Product product = new Product();
 		product.setName("product");
 		product.setBrand("brand");
 		product.setPrice(123);
-		product.setCategory(categoryRepository.getById(1l));
+		product.setCategory(savedCategory);
 		Product savedProduct = productRepository.save(product);
 		Product product1 = new Product();
 		product1.setName("product1");
 		product1.setBrand("brand");
 		product1.setPrice(1234);
-		product1.setCategory(categoryRepository.getById(2l));
+		product1.setCategory(savedCategory);
 		Product savedProduct1 = productRepository.save(product1);
 		List<Product> expected = Arrays.asList(savedProduct, savedProduct1);
 		List<Product> actual = productRepository.findAllProductsByBrand("brand");
