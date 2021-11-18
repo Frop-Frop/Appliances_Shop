@@ -26,13 +26,15 @@ import com.foxminded.appliancesshop.model.ItemListDTO;
 import com.foxminded.appliancesshop.repositories.CartRepository;
 import com.foxminded.appliancesshop.repositories.CustomerRepository;
 
-@SpringBootTest(classes = { CartService.class, CartMapper.class, ItemMapper.class })
+@SpringBootTest(classes = { CartService.class })
 class CartServiceTest {
 
 	@MockBean
 	private CartRepository cartRepository;
 	@MockBean
 	private CustomerRepository customerRepository;
+	@MockBean
+	private ItemMapper itemMapper;
 
 	@MockBean
 	private ProductMapper productMapper;
