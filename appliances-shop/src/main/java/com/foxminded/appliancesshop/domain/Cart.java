@@ -33,8 +33,7 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	// @PrimaryKeyJoinColumn
-	@OneToOne // (mappedBy = "cart")
+	@OneToOne
 	private Customer customer;
 
 	@EqualsAndHashCode.Exclude

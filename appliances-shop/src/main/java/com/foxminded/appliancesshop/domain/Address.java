@@ -20,8 +20,7 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	// @PrimaryKeyJoinColumn
-	@OneToOne // (mappedBy = "address")
+	@OneToOne
 	private Customer customer;
 	private String country;
 	private String region;
