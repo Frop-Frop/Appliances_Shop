@@ -42,7 +42,7 @@ public class ItemMapper {
 			cartId = item.getCart().getId();
 		}
 		Long orderId = null;
-		if (item.getCart() != null) {
+		if (item.getOrder() != null) {
 			orderId = item.getOrder().getId();
 		}
 		ItemDTO itemDTO = new ItemDTO(item.getId(), item.getQuantity(), productDTO, cartId, customerId, orderId,

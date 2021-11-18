@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.appliancesshop.domain.Customer;
 import com.foxminded.appliancesshop.domain.Item;
@@ -31,6 +33,7 @@ class ItemRepositoryTest {
 	private CustomerRepository customerRepository;
 
 	@Test
+	@Sql(scripts = { "/sql/delete_all_item.sql", "/sql/sample_data.sql" })
 	void shouldDeleteAddedToDeferredsItemByProductId() {
 		Product product = new Product();
 		product.setCategory(categoryRepository.findById(1l).get());
@@ -58,6 +61,7 @@ class ItemRepositoryTest {
 	}
 
 	@Test
+	@Sql(scripts = { "/sql/delete_all_item.sql" })
 	void shouldDeleteItemByProductId() {
 		Product product = new Product();
 		product.setPrice(123);
@@ -71,6 +75,8 @@ class ItemRepositoryTest {
 	}
 
 	@Test
+	@Sql(scripts = { "/sql/delete_all_item.sql" })
+	@Transactional
 	void findCustomerDeferredsTest() {
 		Product product = new Product();
 		product.setName("Product");
