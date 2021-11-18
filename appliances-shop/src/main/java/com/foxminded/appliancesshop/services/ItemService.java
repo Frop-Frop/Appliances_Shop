@@ -43,7 +43,7 @@ public class ItemService {
 	}
 
 	public ItemListDTO getCustomerDeferreds(Long id) {
-		return new ItemListDTO(itemRepository.findByCustomerId(id).stream().map(itemMapper::itemToItemDTO)
+		return new ItemListDTO(itemRepository.findDistinctByCustomerId(id).stream().map(itemMapper::itemToItemDTO)
 				.collect(Collectors.toList()));
 	}
 

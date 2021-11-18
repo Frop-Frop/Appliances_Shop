@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS cart;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS address;
+DROP SEQUENCE IF EXISTS item_sequence;
 CREATE TABLE category(
   id BIGSERIAL NOT NULL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
@@ -63,8 +64,11 @@ CREATE TABLE orders(
   customer_id BIGINT REFERENCES customer(id) ON DELETE CASCADE,
   data TIMESTAMP NOT NULL
 );
+
+create sequence item_sequence;
+
 CREATE TABLE item(
-  id BIGSERIAL NOT NULL PRIMARY KEY,
+  id BIGINT DEFAULT nextval('item_sequence'),
   quantity INTEGER NOT NULL,
   product_id BIGINT REFERENCES product(id) ON DELETE CASCADE,
   customer_id BIGINT REFERENCES customer(id) ON DELETE CASCADE,

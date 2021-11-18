@@ -85,9 +85,9 @@ class ItemServiceTest {
 		itemDTO1.setCartId(1L);
 		when(itemMapper.itemToItemDTO(item)).thenReturn(itemDTO);
 		when(itemMapper.itemToItemDTO(Item1)).thenReturn(itemDTO1);
-		when(itemRepository.findByCustomerId(1L)).thenReturn(Arrays.asList(item, Item1));
+		when(itemRepository.findDistinctByCustomerId(1L)).thenReturn(Arrays.asList(item, Item1));
 		itemService.getCustomerDeferreds(1L);
-		verify(itemRepository, times(1)).findByCustomerId(1L);
+		verify(itemRepository, times(1)).findDistinctByCustomerId(1L);
 		verify(itemMapper, times(1)).itemToItemDTO(item);
 		verify(itemMapper, times(1)).itemToItemDTO(Item1);
 

@@ -14,7 +14,7 @@ import com.foxminded.appliancesshop.domain.Item;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-	List<Item> findByCustomerId(Long id);
+	List<Item> findDistinctByCustomerId(Long id);
 
 	List<Item> findByCartId(Long id);
 

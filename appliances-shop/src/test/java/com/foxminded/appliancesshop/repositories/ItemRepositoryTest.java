@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.foxminded.appliancesshop.domain.Customer;
 import com.foxminded.appliancesshop.domain.Item;
@@ -32,7 +31,6 @@ class ItemRepositoryTest {
 	private CustomerRepository customerRepository;
 
 	@Test
-	@Sql(scripts = { "/sql/delete_all_item.sql" })
 	void shouldDeleteAddedToDeferredsItemByProductId() {
 		Product product = new Product();
 		product.setCategory(categoryRepository.findById(1l).get());
@@ -60,7 +58,6 @@ class ItemRepositoryTest {
 	}
 
 	@Test
-	@Sql(scripts = { "/sql/delete_all_item.sql" })
 	void shouldDeleteItemByProductId() {
 		Product product = new Product();
 		product.setPrice(123);
@@ -74,7 +71,6 @@ class ItemRepositoryTest {
 	}
 
 	@Test
-	@Sql(scripts = { "/sql/delete_all_item.sql" })
 	void findCustomerDeferredsTest() {
 		Product product = new Product();
 		product.setName("Product");
@@ -108,7 +104,7 @@ class ItemRepositoryTest {
 		savedItem1.setCustomer(savedCustomer);
 		savedItem1 = itemRepository.save(savedItem1);
 		List<Item> expected = Arrays.asList(savedItem, savedItem1);
-		List<Item> actual = itemRepository.findByCustomerId(savedCustomer.getId());
+		List<Item> actual = itemRepository.findDistinctByCustomerId(savedCustomer.getId());
 		assertEquals(expected, actual);
 	}
 
