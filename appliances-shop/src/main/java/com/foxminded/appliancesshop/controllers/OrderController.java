@@ -18,10 +18,11 @@ import com.foxminded.appliancesshop.model.OrderDTO;
 import com.foxminded.appliancesshop.model.OrderListDTO;
 import com.foxminded.appliancesshop.services.OrderService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Api(description = "Order related operations")
+@Tag(name = "Order controller", description = "Order related operations")
 @RestController
 @RequestMapping("appliances/orders/")
 public class OrderController {
@@ -29,49 +30,49 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
-	@ApiOperation(value = "Get list of all orders")
+	@Operation(summary = "Get list of all orders", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping()
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<OrderListDTO> getAllOrders() {
 		return new ResponseEntity<OrderListDTO>(orderService.getAllOrders(), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get order by id")
+	@Operation(summary = "Get order by id", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
 		return new ResponseEntity<OrderDTO>(orderService.getOrderById(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Make order by id")
+	@Operation(summary = "Make order by id", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping("make_order/{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<OrderDTO> makeOrder(@PathVariable Long id) {
 		return new ResponseEntity<OrderDTO>(orderService.makeOrder(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Create new order by orderDTO")
+	@Operation(summary = "Create new order by orderDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PostMapping
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<OrderDTO> createNewOrder(@RequestBody OrderDTO orderDTO) {
 		return new ResponseEntity<OrderDTO>(orderService.createNewOrder(orderDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Update order by orderDTO")
+	@Operation(summary = "Update order by orderDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PutMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<OrderDTO> updateOrder(@RequestBody OrderDTO orderDTO, @PathVariable Long id) {
 		return new ResponseEntity<OrderDTO>(orderService.saveOrderByDTO(id, orderDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Patch order by orderDTO")
+	@Operation(summary = "Patch order by orderDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PatchMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<OrderDTO> patchOrder(@RequestBody OrderDTO orderDTO, @PathVariable Long id) {
 		return new ResponseEntity<OrderDTO>(orderService.patchOrder(id, orderDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Delete order by id")
+	@Operation(summary = "Delete order by id", security = @SecurityRequirement(name = "basicAuth"))
 	@DeleteMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {

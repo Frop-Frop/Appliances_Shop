@@ -18,10 +18,11 @@ import com.foxminded.appliancesshop.model.AdministratorDTO;
 import com.foxminded.appliancesshop.model.AdministratorListDTO;
 import com.foxminded.appliancesshop.services.AdministratorService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Api(description = "Administrator related operations")
+@Tag(name = "Administrator controller", description = "Administrator related operations")
 @RestController
 @RequestMapping("appliances/administrators/")
 public class AdministratorController {
@@ -29,21 +30,21 @@ public class AdministratorController {
 	@Autowired
 	private AdministratorService administratorService;
 
-	@ApiOperation(value = "Get list of all administrators")
+	@Operation(summary = "Get list of all administrators", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<AdministratorListDTO> getAllAdministrators() {
 		return new ResponseEntity<AdministratorListDTO>(administratorService.getAllAdministrators(), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get administrator by id")
+	@Operation(summary = "Get administrator by id", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping("{id}")
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable Long id) {
 		return new ResponseEntity<AdministratorDTO>(administratorService.getAdministratorById(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Create new administrator by administratorDTO")
+	@Operation(summary = "Create new administrator by administratorDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PostMapping
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<AdministratorDTO> createNewAdministrator(@RequestBody AdministratorDTO administratorDTO) {
@@ -51,7 +52,7 @@ public class AdministratorController {
 				HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Update administrator by administratorDTO")
+	@Operation(summary = "Update administrator by administratorDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PutMapping("{id}")
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<AdministratorDTO> updateAdministrator(@RequestBody AdministratorDTO administratorDTO,
@@ -60,7 +61,7 @@ public class AdministratorController {
 				HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Patch administrator by administratorDTO")
+	@Operation(summary = "Patch administrator by administratorDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PatchMapping("{id}")
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<AdministratorDTO> patchAdministrator(@RequestBody AdministratorDTO administratorDTO,
@@ -69,7 +70,7 @@ public class AdministratorController {
 				HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Delete administrator by id")
+	@Operation(summary = "Delete administrator by id", security = @SecurityRequirement(name = "basicAuth"))
 	@DeleteMapping("{id}")
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<Void> deleteAdministrator(@PathVariable Long id) {

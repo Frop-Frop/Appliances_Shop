@@ -18,10 +18,11 @@ import com.foxminded.appliancesshop.model.CategoryDTO;
 import com.foxminded.appliancesshop.model.CategoryListDTO;
 import com.foxminded.appliancesshop.services.CategoryService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Api(description = "Department related operations")
+@Tag(name = "Category controller", description = "Department related operations")
 @RestController
 @RequestMapping("appliances/categories/")
 public class CategoryController {
@@ -29,52 +30,52 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@ApiOperation(value = "Get list of all categories")
+	@Operation(summary = "Get list of all categories")
 	@GetMapping
 	public ResponseEntity<CategoryListDTO> getAllCategories() {
 		return new ResponseEntity<CategoryListDTO>(categoryService.getAllCategories(), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get list of all subcategories")
+	@Operation(summary = "Get list of all subcategories")
 	@GetMapping("subcategories/{id}")
 	public ResponseEntity<CategoryListDTO> getAllSubCategories(@PathVariable Long id) {
 		return new ResponseEntity<CategoryListDTO>(categoryService.getSubCategories(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get category by id")
+	@Operation(summary = "Get category by id")
 	@GetMapping("{id}")
 	public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
 		return new ResponseEntity<CategoryDTO>(categoryService.getCategoryById(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get category by name")
+	@Operation(summary = "Get category by name")
 	@GetMapping("name/{name}")
 	public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
 		return new ResponseEntity<CategoryDTO>(categoryService.getCategoryByName(name), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Create new category by categoryDTO")
+	@Operation(summary = "Create new category by categoryDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PostMapping
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<CategoryDTO> createNewCategory(@RequestBody CategoryDTO categoryDTO) {
 		return new ResponseEntity<CategoryDTO>(categoryService.createNewCategory(categoryDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Update new category by categoryDTO")
+	@Operation(summary = "Update new category by categoryDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PutMapping("{id}")
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
 		return new ResponseEntity<CategoryDTO>(categoryService.saveCategoryByDTO(id, categoryDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Patch new category by categoryDTO")
+	@Operation(summary = "Patch new category by categoryDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PatchMapping("{id}")
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<CategoryDTO> patchCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
 		return new ResponseEntity<CategoryDTO>(categoryService.patchCategory(id, categoryDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Delete category by id")
+	@Operation(summary = "Delete category by id", security = @SecurityRequirement(name = "basicAuth"))
 	@DeleteMapping("{id}")
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {

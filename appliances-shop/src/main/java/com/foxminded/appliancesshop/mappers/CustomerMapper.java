@@ -35,12 +35,24 @@ public class CustomerMapper {
 		if (customer == null) {
 			return null;
 		}
-		CartDTO cartDTO = new CartDTO(customer.getCart().getId(),
-				customer.getCart().getItemsList().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
-		OrderDTO orderDTO = new OrderDTO(customer.getOrder().getId(),
-				customer.getOrder().getItemsList().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()),
-				customer.getOrder().getData());
-		AddressDTO addressDTO = addressMapper.addressToAddressDTOWithoutCustomer(customer.getAddress());
+		CartDTO cartDTO = null;
+		if (customer.getCart() != null) {
+			cartDTO = new CartDTO(customer.getCart().getId(), customer.getCart().getItemsList().stream()
+					.map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
+		}
+
+		OrderDTO orderDTO = null;
+		if (customer.getOrder() != null) {
+			orderDTO = new OrderDTO(
+					customer.getOrder().getId(), customer.getOrder().getItemsList().stream()
+							.map(itemMapper::itemToItemDTO).collect(Collectors.toList()),
+					customer.getOrder().getData());
+		}
+
+		AddressDTO addressDTO = null;
+		if (customer.getAddress() != null) {
+			addressDTO = addressMapper.addressToAddressDTOWithoutCustomer(customer.getAddress());
+		}
 		CustomerDTO customerDTO = new CustomerDTO(customer.getId(), customer.getFirstName(), customer.getLastName(),
 				customer.getEmail(), "password is not displayed", cartDTO, orderDTO, new ItemListDTO(customer
 						.getDeferredsList().stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList())),
@@ -56,9 +68,18 @@ public class CustomerMapper {
 				.collect(Collectors.toSet());
 		Set<Item> orderItems = customerDTO.getOrder().getItems().getItems().stream().map(itemMapper::itemDTOtoItem)
 				.collect(Collectors.toSet());
-		Cart cart = new Cart(customerDTO.getCart().getId(), cartItems);
-		Order order = new Order(customerDTO.getOrder().getId(), orderItems);
-		Address address = addressMapper.addressDTOtoAddressWithoutCustomer(customerDTO.getAddress());
+		Cart cart = null;
+		if (customerDTO.getCart() != null) {
+			cart = new Cart(customerDTO.getCart().getId(), cartItems);
+		}
+		Order order = null;
+		if (customerDTO.getOrder() != null) {
+			order = new Order(customerDTO.getOrder().getId(), orderItems);
+		}
+		Address address = null;
+		if (customerDTO.getAddress() != null) {
+			address = addressMapper.addressDTOtoAddressWithoutCustomer(customerDTO.getAddress());
+		}
 		Set<Item> items = new HashSet<>();
 		customerDTO.getDeferreds().getItems().stream().map(itemMapper::itemDTOtoItem).forEach(items::add);
 		Customer customer = new Customer(customerDTO.getId(), customerDTO.getFirstName(), customerDTO.getLastName(),

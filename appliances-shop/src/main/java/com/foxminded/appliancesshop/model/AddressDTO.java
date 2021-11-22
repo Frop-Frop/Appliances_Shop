@@ -1,6 +1,5 @@
 package com.foxminded.appliancesshop.model;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,17 +10,16 @@ import lombok.NoArgsConstructor;
 public class AddressDTO {
 
 	private Long id;
-	@ApiModelProperty(value = "Customer's id", required = true)
+
 	private Long customerId;
-	@ApiModelProperty(required = true)
+
 	private String country;
-	@ApiModelProperty(required = true)
+
 	private String region;
-	@ApiModelProperty(required = true)
+
 	private String city;
-	@ApiModelProperty(required = true)
+
 	private String street;
-	@ApiModelProperty(required = true)
 	private String houseNumber;
 
 	@Override

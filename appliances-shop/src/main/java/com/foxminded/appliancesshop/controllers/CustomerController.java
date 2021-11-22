@@ -18,10 +18,11 @@ import com.foxminded.appliancesshop.model.CustomerDTO;
 import com.foxminded.appliancesshop.model.CustomerListDTO;
 import com.foxminded.appliancesshop.services.CustomerService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Api(description = "Customer related operations")
+@Tag(name = "Custoemr controller", description = "Customer related operations")
 @RestController
 @RequestMapping("appliances/customers/")
 public class CustomerController {
@@ -29,42 +30,42 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 
-	@ApiOperation(value = "Get list of all customer")
+	@Operation(summary = "Get list of all customer", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping
 	@PreAuthorize("hasAuthority('server_change')")
 	public ResponseEntity<CustomerListDTO> getAllCustomers() {
 		return new ResponseEntity<CustomerListDTO>(customerService.getAllCustomers(), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get customer by id")
+	@Operation(summary = "Get customer by id", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
 		return new ResponseEntity<CustomerDTO>(customerService.getCustomerById(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Create new customer by customerDTO")
+	@Operation(summary = "Create new customer by customerDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PostMapping
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<CustomerDTO> createNewCustomer(@RequestBody CustomerDTO customerDTO) {
 		return new ResponseEntity<CustomerDTO>(customerService.createNewCustomer(customerDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Update customer by customerDTO")
+	@Operation(summary = "Update customer by customerDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PutMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<CustomerDTO> updateCustomer(@RequestBody CustomerDTO customerDTO, @PathVariable Long id) {
 		return new ResponseEntity<CustomerDTO>(customerService.saveCustomerByDTO(id, customerDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Patch customer by customerDTO")
+	@Operation(summary = "Patch customer by customerDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PatchMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<CustomerDTO> patchCustomer(@RequestBody CustomerDTO customerDTO, @PathVariable Long id) {
 		return new ResponseEntity<CustomerDTO>(customerService.patchCustomer(id, customerDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Delete customer by id")
+	@Operation(summary = "Delete customer by id", security = @SecurityRequirement(name = "basicAuth"))
 	@DeleteMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {

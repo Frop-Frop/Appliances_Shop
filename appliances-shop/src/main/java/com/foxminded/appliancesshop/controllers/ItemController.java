@@ -18,10 +18,11 @@ import com.foxminded.appliancesshop.model.ItemDTO;
 import com.foxminded.appliancesshop.model.ItemListDTO;
 import com.foxminded.appliancesshop.services.ItemService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Api(description = "Item related operations")
+@Tag(name = "Item controller", description = "Item related operations")
 @RestController
 @RequestMapping("appliances/items/")
 public class ItemController {
@@ -29,56 +30,56 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 
-	@ApiOperation(value = "Get list of all items in cart")
+	@Operation(summary = "Get list of all items in cart", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping("cart/{cartId}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<ItemListDTO> getAllItemsInCart(@PathVariable Long cartId) {
 		return new ResponseEntity<ItemListDTO>(itemService.getAllItemsInCart(cartId), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get list of all items in order")
+	@Operation(summary = "Get list of all items in order", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping("order/{orderId}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<ItemListDTO> getAllItemsInOrder(@PathVariable Long orderId) {
 		return new ResponseEntity<ItemListDTO>(itemService.getAllItemsInOrder(orderId), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get item by id")
+	@Operation(summary = "Get item by id", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<ItemDTO> getItemById(@PathVariable Long id) {
 		return new ResponseEntity<ItemDTO>(itemService.getItemById(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Get list of items in cystomer's deferreds by customer id")
+	@Operation(summary = "Get list of items in cystomer's deferreds by customer id", security = @SecurityRequirement(name = "basicAuth"))
 	@GetMapping("customer/{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<ItemListDTO> getCustomerDeferreds(Long id) {
 		return new ResponseEntity<ItemListDTO>(itemService.getCustomerDeferreds(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Create new item by itemDTO")
+	@Operation(summary = "Create new item by itemDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PostMapping
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<ItemDTO> createNewItem(@RequestBody ItemDTO itemDTO) {
 		return new ResponseEntity<ItemDTO>(itemService.createNewItem(itemDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Update item by itemDTO")
+	@Operation(summary = "Update item by itemDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PutMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<ItemDTO> updateItem(@RequestBody ItemDTO itemDTO, @PathVariable Long id) {
 		return new ResponseEntity<ItemDTO>(itemService.saveItemByDTO(id, itemDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Patch item by itemDTO")
+	@Operation(summary = "Patch item by itemDTO", security = @SecurityRequirement(name = "basicAuth"))
 	@PatchMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<ItemDTO> patchItem(@RequestBody ItemDTO itemDTO, @PathVariable Long id) {
 		return new ResponseEntity<ItemDTO>(itemService.patchItem(id, itemDTO), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Delete item by id")
+	@Operation(summary = "Delete item by id", security = @SecurityRequirement(name = "basicAuth"))
 	@DeleteMapping("{id}")
 	@PreAuthorize("hasAuthority('act')")
 	public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
