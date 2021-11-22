@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,23 +53,24 @@ public class Bootstrap implements CommandLineRunner {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	private static final Logger log = Logger.getLogger(Bootstrap.class.getName());
 
 	@Override
 	public void run(String... args) throws Exception {
 		loadAdsresses();
-		System.out.println("Addresses loaded");
+		log.debug("Addresses loaded");
 		loadCustomers();
-		System.out.println("Customers loaded");
+		log.debug("Customers loaded");
 		loadCategories();
-		System.out.println("Categories loaded");
+		log.debug("Categories loaded");
 		loadProducts();
-		System.out.println("Products loaded");
+		log.debug("Products loaded");
 		addItemsToCarts();
-		System.out.println("Items added to carts");
+		log.debug("Items added to carts");
 		addItemsToDeferreds();
-		System.out.println("Items added to deferreds");
+		log.debug("Items added to deferreds");
 		loadAdministrators();
-		System.out.println("Administrator added to deferreds");
+		log.debug("Administrator added to deferreds");
 	}
 
 	private void loadAdsresses() {

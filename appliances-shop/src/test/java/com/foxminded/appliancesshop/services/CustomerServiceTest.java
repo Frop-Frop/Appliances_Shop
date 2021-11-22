@@ -99,17 +99,6 @@ class CustomerServiceTest {
 	}
 
 	@Test
-	void getCustomerObjectByIdTest() {
-		Customer customer = new Customer();
-		customer.setId(1L);
-		customer.setFirstName("John");
-		Optional<Customer> optionalCustomer = Optional.of(customer);
-		when(customerRepository.findById(1L)).thenReturn(optionalCustomer);
-		customerService.getCustomerOjectById(1L);
-		verify(customerRepository, times(1)).findById(1L);
-	}
-
-	@Test
 	void createNewCustomerTest() {
 		Customer customer = new Customer();
 		customer.setId(1L);

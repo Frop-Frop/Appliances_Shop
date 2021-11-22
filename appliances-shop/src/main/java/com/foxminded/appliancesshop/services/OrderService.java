@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.services;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +35,22 @@ public class OrderService {
 	@Autowired
 	private ItemMapper itemMapper;
 
+	private static final Logger log = Logger.getLogger(OrderService.class.getName());
+
 	public OrderListDTO getAllOrders() {
+		log.debug("getAllOrders() called in OrdersService");
 		return new OrderListDTO(
 				orderRepository.findAll().stream().map(orderMapper::orderToOrderDTO).collect(Collectors.toList()));
 	}
 
 	public OrderDTO getOrderById(Long id) {
+		log.debug("getOrderById() called in OrdersService with order id: " + id);
 		return orderRepository.findById(id).map(orderMapper::orderToOrderDTO)
 				.orElseThrow(ResourseNotFoundException::new);
 	}
 
 	public OrderDTO makeOrder(Long id) {
+		log.debug("makeOrder() called in OrdersService with order id: " + id);
 		Optional<Order> optionalOrder = orderRepository.findById(id);
 		if (optionalOrder.isEmpty()) {
 			throw new ResourseNotFoundException("Order with id: " + id + " not found");
@@ -65,12 +71,14 @@ public class OrderService {
 	}
 
 	public OrderDTO createNewOrder(OrderDTO orderDTO) {
+		log.debug("createNewOrder() called in OrdersService with orderDTO: " + orderDTO);
 		Order order = orderMapper.orderDTOtoOrder(orderDTO);
 		Order savedOrder = orderRepository.save(order);
 		return orderMapper.orderToOrderDTO(savedOrder);
 	}
 
 	public OrderDTO saveOrderByDTO(Long id, OrderDTO orderDTO) {
+		log.debug("saveOrderByDTO() called in OrdersService with orderDTO: " + orderDTO + " and order id: " + id);
 		Optional<Order> optionalOrder = orderRepository.findById(id);
 		if (optionalOrder == null) {
 			throw new ResourseNotFoundException();
@@ -82,6 +90,7 @@ public class OrderService {
 	}
 
 	public OrderDTO patchOrder(Long id, OrderDTO orderDTO) {
+		log.debug("patchOrder() called in OrdersService with orderDTO: " + orderDTO + " and order id: " + id);
 		Optional<Order> optionalOrder = orderRepository.findById(id);
 		if (optionalOrder.isEmpty()) {
 			throw new ResourseNotFoundException("Order with id: " + id + "not found");
@@ -102,6 +111,7 @@ public class OrderService {
 	}
 
 	public void deleteById(Long id) {
+		log.debug("deleteById() called in OrdersService with order id: " + id);
 		Order order = orderRepository.getById(id);
 		orderRepository.delete(order);
 	}

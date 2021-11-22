@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.services;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,25 +22,33 @@ public class AdministratorService {
 	@Autowired
 	private AdministratorMapper administratorMapper;
 
+	private static final Logger log = Logger.getLogger(AdministratorService.class.getName());
+
 	public AdministratorListDTO getAllAdministrators() {
+		log.debug("getAllAdministrators() called in AdministratorService");
 		return new AdministratorListDTO(administratorRepository.findAll().stream()
 				.map(administratorMapper::administratorToAdministratorDTO).collect(Collectors.toList()));
 	}
 
 	public AdministratorDTO getAdministratorById(Long id) {
+		log.debug("getAdministratorById() called in AdministratorService with administrator id: " + id);
 		return administratorRepository.findById(id).map(administratorMapper::administratorToAdministratorDTO)
 				.orElseThrow(ResourseNotFoundException::new);
 	}
 
 	public AdministratorDTO createNewAdministrator(AdministratorDTO administratorDTO) {
+		log.debug("createNewAdministrator() called in AdministratorService with administratorDTO: " + administratorDTO);
 		Administrator administrator = administratorMapper.administratorDTOtoAdministrator(administratorDTO);
 		Administrator savedAdministrator = administratorRepository.save(administrator);
 		return administratorMapper.administratorToAdministratorDTO(savedAdministrator);
 	}
 
 	public AdministratorDTO saveAdministratorByDTO(Long id, AdministratorDTO administratorDTO) {
+		log.debug("saveAdministratorByDTO() called in AdministratorService with administratorDTO: " + administratorDTO
+				+ " and administrator id: " + id);
 		Optional<Administrator> optionalAdministrator = administratorRepository.findById(id);
 		if (optionalAdministrator.isEmpty()) {
+			log.debug("Administrator is empty");
 			throw new ResourseNotFoundException();
 		}
 		Administrator administrator = optionalAdministrator.get();
@@ -49,8 +58,11 @@ public class AdministratorService {
 	}
 
 	public AdministratorDTO patchAdministrator(Long id, AdministratorDTO administratorDTO) {
+		log.debug("pathAdministrator() called in AdministratorService with administratorDTO: " + administratorDTO
+				+ " and administrator id: " + id);
 		Administrator administrator = administratorRepository.getById(id);
 		if (administrator == null) {
+			log.debug("Administrator is empty");
 			throw new ResourseNotFoundException();
 		}
 		if (administrator.getFirstName() == null) {
@@ -75,6 +87,7 @@ public class AdministratorService {
 	}
 
 	public void deleteById(Long id) {
+		log.debug("deleteById() called in AdministratorService with administrator id: " + id);
 		Administrator administrator = administratorRepository.getById(id);
 		administratorRepository.delete(administrator);
 	}

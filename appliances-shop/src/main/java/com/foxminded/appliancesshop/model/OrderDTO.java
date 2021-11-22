@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.model;
 import java.util.Date;
 import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,11 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
 
 	private Long id;
+	@ApiModelProperty(value = "Customer's id", required = true)
 	private Long customerId;
+	@ApiModelProperty(value = "List of items in order")
 	private ItemListDTO items;
+	@ApiModelProperty(required = true)
 	private Date data;
 
 	public OrderDTO(Long id, List<ItemDTO> items, Date data) {

@@ -2,6 +2,7 @@ package com.foxminded.appliancesshop.model;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,9 @@ import lombok.NoArgsConstructor;
 public class CartDTO {
 
 	private Long id;
+	@ApiModelProperty(required = true)
 	private Long customerId;
+	@ApiModelProperty(value = "Items in cart")
 	private ItemListDTO items;
 
 	public CartDTO(Long id, List<ItemDTO> items) {

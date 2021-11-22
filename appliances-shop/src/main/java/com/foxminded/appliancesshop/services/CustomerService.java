@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.services;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,25 +42,22 @@ public class CustomerService {
 	@Autowired
 	private CartService cartService;
 
+	private static final Logger log = Logger.getLogger(CustomerService.class.getName());
+
 	public CustomerListDTO getAllCustomers() {
+		log.debug("getAllCustomers() called in CustomerService");
 		return new CustomerListDTO(customerRepository.findAll().stream().map(customerMapper::customerToCustomerDTO)
 				.collect(Collectors.toList()));
 	}
 
 	public CustomerDTO getCustomerById(Long id) {
+		log.debug("getCustomerById() called in CustomerService with customer id: " + id);
 		return customerRepository.findById(id).map(customerMapper::customerToCustomerDTO)
 				.orElseThrow(ResourseNotFoundException::new);
 	}
 
-	public Customer getCustomerOjectById(Long id) {
-		Optional<Customer> customer = customerRepository.findById(id);
-		if (customer.isEmpty()) {
-			throw new ResourseNotFoundException("Customer with id: " + id + " not found");
-		}
-		return customer.get();
-	}
-
 	public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+		log.debug("createNewCustomer() called in CustomerService with customerDTO: " + customerDTO);
 		Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
 		if (customer.getCart() == null) {
 			Cart cart = cartRepository.save(new Cart());
@@ -70,6 +68,8 @@ public class CustomerService {
 	}
 
 	public CustomerDTO saveCustomerByDTO(Long id, CustomerDTO customerDTO) {
+		log.debug("saveCustomerByDTO() called in CustomerService with customerDTO: " + customerDTO
+				+ " and customer id: " + id);
 		Optional<Customer> optionalCustomer = customerRepository.findById(id);
 		if (optionalCustomer.isEmpty()) {
 			throw new ResourseNotFoundException();
@@ -83,6 +83,8 @@ public class CustomerService {
 	}
 
 	public CustomerDTO patchCustomer(Long id, CustomerDTO customerDTO) {
+		log.debug("patchCustomer() called in CustomerService with customerDTO: " + customerDTO + " and customer id: "
+				+ id);
 		Customer customer = customerRepository.getById(id);
 		if (customer == null) {
 			throw new ResourseNotFoundException();
@@ -113,6 +115,7 @@ public class CustomerService {
 	}
 
 	public void deleteById(Long id) {
+		log.debug("deleteById() called in CustomerService with customer id: " + id);
 		Customer customer = customerRepository.getById(id);
 		customerRepository.delete(customer);
 	}

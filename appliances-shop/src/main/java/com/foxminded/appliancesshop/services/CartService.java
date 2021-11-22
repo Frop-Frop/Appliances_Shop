@@ -3,6 +3,7 @@ package com.foxminded.appliancesshop.services;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +30,15 @@ public class CartService {
 	@Autowired
 	private ItemMapper itemMapper;
 
+	private static final Logger log = Logger.getLogger(CartService.class.getName());
+
 	public CartDTO getCartById(Long id) {
+		log.debug("getCartById() called in CartService with cart id: " + id);
 		return cartRepository.findById(id).map(cartMapper::cartToCartDTO).orElseThrow(ResourseNotFoundException::new);
 	}
 
 	public CartDTO saveCartByDTO(Long id, CartDTO cartDTO) {
+		log.debug("saveCartByDTO called in CartService with cartDTO: " + cartDTO + " and cart id: " + id);
 		Optional<Cart> optionalCart = cartRepository.findById(id);
 		if (optionalCart == null) {
 			throw new ResourseNotFoundException();
@@ -45,6 +50,7 @@ public class CartService {
 	}
 
 	public CartDTO patchCart(Long id, CartDTO cartDTO) {
+		log.debug("patchCart called in CartService with cartDTO: " + cartDTO + " and cart id: " + id);
 		Optional<Cart> optionalCart = cartRepository.findById(id);
 		if (optionalCart.isEmpty()) {
 			throw new ResourseNotFoundException("Cart with id: " + id + "not found");

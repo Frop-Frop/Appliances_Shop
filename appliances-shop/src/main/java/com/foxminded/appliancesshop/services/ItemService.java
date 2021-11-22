@@ -2,6 +2,7 @@ package com.foxminded.appliancesshop.services;
 
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,32 +33,40 @@ public class ItemService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
+	private static final Logger log = Logger.getLogger(ItemService.class.getName());
+
 	public ItemListDTO getAllItemsInCart(Long id) {
+		log.debug("getAllItemsInCart() called in ItemService with cart id: " + id);
 		return new ItemListDTO(
 				itemRepository.findByCartId(id).stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
 	}
 
 	public ItemListDTO getAllItemsInOrder(Long id) {
+		log.debug("getAllItemsInOrder() called in ItemService with order id: " + id);
 		return new ItemListDTO(
 				itemRepository.findByOrderId(id).stream().map(itemMapper::itemToItemDTO).collect(Collectors.toList()));
 	}
 
 	public ItemListDTO getCustomerDeferreds(Long id) {
+		log.debug("getAllItemsInOrder() called in ItemService with order id: " + id);
 		return new ItemListDTO(itemRepository.findDistinctByCustomerId(id).stream().map(itemMapper::itemToItemDTO)
 				.collect(Collectors.toList()));
 	}
 
 	public ItemDTO getItemById(Long id) {
+		log.debug("getItemById() called in ItemService with item id: " + id);
 		return itemRepository.findById(id).map(itemMapper::itemToItemDTO).orElseThrow(ResourseNotFoundException::new);
 	}
 
 	public ItemDTO createNewItem(ItemDTO itemDTO) {
+		log.debug("getItemById() called in ItemService with itemDTO: " + itemDTO);
 		Item item = itemMapper.itemDTOtoItem(itemDTO);
 		Item savedItem = itemRepository.save(item);
 		return itemMapper.itemToItemDTO(savedItem);
 	}
 
 	public ItemDTO saveItemByDTO(Long id, ItemDTO itemDTO) {
+		log.debug("saveItemByDTO() called in ItemService with itemDTO: " + itemDTO + " and item id: " + id);
 		Item item = itemRepository.findById(id).get();
 		if (item == null) {
 			throw new ResourseNotFoundException();
@@ -68,6 +77,7 @@ public class ItemService {
 	}
 
 	public ItemDTO patchItem(Long id, ItemDTO itemDTO) {
+		log.debug("patchItem() called in ItemService with itemDTO: " + itemDTO + " and item id: " + id);
 		Item item = itemRepository.getById(id);
 		if (item == null) {
 			throw new ResourseNotFoundException();
@@ -88,6 +98,7 @@ public class ItemService {
 	}
 
 	public void deleteById(Long id) {
+		log.debug("deleteById() called in ItemService with item id: " + id);
 		Item item = itemRepository.getById(id);
 		itemRepository.delete(item);
 	}
