@@ -22,7 +22,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
 	@Transactional
 	@Modifying
-	@Query(value = "DELETE FROM item WHERE item.product_id = :id", nativeQuery = true)
+	@Query(value = "DELETE FROM items WHERE product_id = :id", nativeQuery = true)
 	void deleteItemsByProduct(@Param("id") Long id);
 
 }

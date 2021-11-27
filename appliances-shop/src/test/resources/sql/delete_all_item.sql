@@ -1,16 +1,16 @@
 delete
 from deferreds;
 delete
-from administrator;
+from administrators;
 delete
-from customer;
+from customers;
 delete
-from item;
+from items;
 delete
-from product;
+from products;
 delete
-from cart;
+from carts;
 delete
-from category;
+from categories;
 delete
-from address;
+from addresses;

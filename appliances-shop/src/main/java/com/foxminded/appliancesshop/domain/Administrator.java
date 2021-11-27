@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.foxminded.appliancesshop.domain.security.Role;
 import com.foxminded.appliancesshop.domain.security.Status;
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "administrators")
 public class Administrator extends User {
 
 	@Id

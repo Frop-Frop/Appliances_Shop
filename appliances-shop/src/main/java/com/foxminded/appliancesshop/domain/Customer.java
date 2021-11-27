@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.foxminded.appliancesshop.domain.security.Role;
 import com.foxminded.appliancesshop.domain.security.Status;
@@ -34,6 +35,7 @@ import lombok.ToString;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "customers")
 public class Customer extends User {
 
 	@Id

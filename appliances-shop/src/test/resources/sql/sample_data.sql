@@ -1,1 +1,1 @@
-insert into category (id, name) values (1, 'test');
+insert into categories (id, name) values (1, 'test');

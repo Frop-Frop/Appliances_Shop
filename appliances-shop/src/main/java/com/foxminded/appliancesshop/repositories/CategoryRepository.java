@@ -15,6 +15,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 	Optional<Category> findByName(String name);
 
-	@Query(value = "SELECT * FROM category WHERE category.super_category_id = :id", nativeQuery = true)
+	@Query(value = "SELECT * FROM categories WHERE super_category_id = :id", nativeQuery = true)
 	List<Category> findSubCategories(@Param("id") Long id);
 }
