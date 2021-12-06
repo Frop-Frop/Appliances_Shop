@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import com.foxminded.appliancesshop.domain.security.Role;
 import com.foxminded.appliancesshop.domain.security.Status;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ItemRepositoryTest {
 
 	@Autowired
@@ -32,8 +34,8 @@ class ItemRepositoryTest {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	@Test
 	@Sql(scripts = { "/sql/delete_all_item.sql", "/sql/sample_data.sql" })
+	@Test
 	void shouldDeleteAddedToDeferredsItemByProductId() {
 		Product product = new Product();
 		product.setCategory(categoryRepository.findById(1l).get());
@@ -60,8 +62,8 @@ class ItemRepositoryTest {
 
 	}
 
-	@Test
 	@Sql(scripts = { "/sql/delete_all_item.sql" })
+	@Test
 	void shouldDeleteItemByProductId() {
 		Product product = new Product();
 		product.setPrice(123);
@@ -70,12 +72,12 @@ class ItemRepositoryTest {
 		Item item = new Item();
 		item.setProduct(savedProduct);
 		item.setQuantity(2);
-		Item savedItem = itemRepository.save(item);
+		itemRepository.save(item);
 		itemRepository.deleteItemsByProduct(savedProduct.getId());
 	}
 
-	@Test
 	@Sql(scripts = { "/sql/delete_all_item.sql" })
+	@Test
 	@Transactional
 	void findCustomerDeferredsTest() {
 		Product product = new Product();

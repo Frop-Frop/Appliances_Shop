@@ -57,20 +57,35 @@ public class Bootstrap implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		loadAdsresses();
-		log.debug("Addresses loaded");
-		loadCustomers();
-		log.debug("Customers loaded");
-		loadCategories();
-		log.debug("Categories loaded");
-		loadProducts();
-		log.debug("Products loaded");
-		addItemsToCarts();
-		log.debug("Items added to carts");
-		addItemsToDeferreds();
-		log.debug("Items added to deferreds");
-		loadAdministrators();
-		log.debug("Administrator added to deferreds");
+		if (addressRepository.findAll().isEmpty()) {
+			loadAdsresses();
+			log.debug("Addresses loaded");
+		}
+		if (customerRepository.findAll().isEmpty()) {
+			loadCustomers();
+			log.debug("Customers loaded");
+		}
+		if (categoryRepository.findAll().isEmpty()) {
+			loadCategories();
+			log.debug("Categories loaded");
+		}
+		if (productRepository.findAll().isEmpty()) {
+			loadProducts();
+			log.debug("Products loaded");
+		}
+		if (itemRepository.findAll().isEmpty()) {
+			addItemsToCarts();
+			log.debug("Items added to carts");
+		}
+		if (itemRepository.findDistinctByCustomerId(1L).isEmpty()) {
+			addItemsToDeferreds();
+			log.debug("Items added to deferreds");
+		}
+		if (administratorRepository.findAll().isEmpty()) {
+			loadAdministrators();
+			log.debug("Administrator added to deferreds");
+		}
+
 	}
 
 	private void loadAdsresses() {
@@ -128,24 +143,6 @@ public class Bootstrap implements CommandLineRunner {
 		}
 	}
 
-	private void loadAdministrators() {
-		List<String> firstNames = Arrays.asList("Thibaud", "Gayla");
-		List<String> lastNames = Arrays.asList("Minchindon", "Meller");
-		List<String> emails = Arrays.asList("tminchindon0@mozilla.org", "gmeller1@storify.com");
-		Administrator administrator;
-		for (int i = 0; i < 2; i++) {
-			administrator = new Administrator();
-			administrator.setFirstName(firstNames.get(i));
-			administrator.setLastName(lastNames.get(i));
-			administrator.setEmail(emails.get(i));
-			administrator.setPassword(passwordEncoder.encode("administrator"));
-			administrator.setRole(Role.ADMINISTRATOR);
-			administrator.setStatus(Status.ACTIVE);
-			administratorRepository.save(administrator);
-		}
-
-	}
-
 	private void loadCategories() {
 		List<String> superCategories = Arrays.asList("Kitchen Appliances", "Washers & Dryers", "Floor Care",
 				"Heating, Cooling & Air Quality");
@@ -159,16 +156,18 @@ public class Bootstrap implements CommandLineRunner {
 		subCategories.addAll(transfer);
 		superCategories.stream().forEach(category -> {
 			Category superCategory = categoryRepository.save(new Category(category));
-			List<String> localSubCategory = subCategories.remove(0);
-			localSubCategory.stream().forEach(lsc -> {
+			List<String> localSubCategories = subCategories.remove(0);
+			localSubCategories.stream().forEach(lsc -> {
 				categoryRepository.save(new Category(lsc, superCategory));
 			});
 		});
+
 		List<String> ovens = Arrays.asList("Cooktops", "Wall Ovens", "Range Hoods & Ventilation");
 		Category ovenCategory = categoryRepository.findByName("Ovens").get();
 		ovens.stream().forEach(category -> {
 			categoryRepository.save(new Category(category, ovenCategory));
 		});
+
 	}
 
 	private void loadProducts() {
@@ -371,11 +370,30 @@ public class Bootstrap implements CommandLineRunner {
 				Item item = new Item();
 				item.setProduct(productRepository.findById(productId.longValue()).get());
 				item.setQuantity((int) ((Math.random() * (10 - 1)) + 1));
+				item.setCustomer(customer);
 				Item savedItem = itemRepository.save(item);
 				customer.addItemToDeferreds(savedItem);
 			}
 			customerRepository.save(customer);
 		}
+	}
+
+	private void loadAdministrators() {
+		List<String> firstNames = Arrays.asList("Thibaud", "Gayla");
+		List<String> lastNames = Arrays.asList("Minchindon", "Meller");
+		List<String> emails = Arrays.asList("tminchindon0@mozilla.org", "gmeller1@storify.com");
+		Administrator administrator;
+		for (int i = 0; i < 2; i++) {
+			administrator = new Administrator();
+			administrator.setFirstName(firstNames.get(i));
+			administrator.setLastName(lastNames.get(i));
+			administrator.setEmail(emails.get(i));
+			administrator.setPassword(passwordEncoder.encode("administrator"));
+			administrator.setRole(Role.ADMINISTRATOR);
+			administrator.setStatus(Status.ACTIVE);
+			administratorRepository.save(administrator);
+		}
+
 	}
 
 	private void generateProducts(Category category, List<String> names, List<String> descriptions, int minPrice,
@@ -387,6 +405,7 @@ public class Bootstrap implements CommandLineRunner {
 			product.setDescription(localDescriptions.remove(0));
 			product.setBrand(o.substring(0, o.indexOf(' ')));
 			product.setPrice((int) (Math.random() * (maxPrice - minPrice)) + minPrice);
+			product.setUnitsLeftInWarehouse((int) (Math.random() * 100));
 			Product savedProduct = productRepository.save(product);
 			category.addProductToCategory(savedProduct);
 		});

@@ -1,11 +1,13 @@
 package com.foxminded.appliancesshop.domain;
 
+import java.util.Objects;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,22 +26,28 @@ public class Item implements Comparable<Item> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Integer quantity;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "product_id", referencedColumnName = "id")
 	private Product product;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Cart cart;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Order order;
 
-	@ManyToOne
-	@JoinTable(name = "deferreds", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Customer customer;
 
 	public Integer getCost() {
 		return product.getPrice() * quantity;
+	}
+
+	public Item(Integer quantity, Product product, Cart cart, Customer customer) {
+		this.quantity = quantity;
+		this.product = product;
+		this.cart = cart;
+		this.customer = customer;
 	}
 
 	@Override
@@ -59,11 +67,18 @@ public class Item implements Comparable<Item> {
 		return result;
 	}
 
-	public Item(Integer quantity, Product product, Cart cart, Customer customer) {
-		this.quantity = quantity;
-		this.product = product;
-		this.cart = cart;
-		this.customer = customer;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		return Objects.equals(id, other.id) && Objects.equals(quantity, other.quantity)
+				&& Objects.equals(product, other.product) && Objects.equals(cart.getId(), other.cart.getId())
+				&& Objects.equals(order, other.order) && Objects.equals(customer, other.customer);
 	}
 
 }

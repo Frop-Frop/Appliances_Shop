@@ -37,9 +37,9 @@ public class Category {
 	private String name;
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "category")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true, mappedBy = "category")
 	private Set<Product> products = new HashSet<>();
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "super_category_id", referencedColumnName = "id")
 	private Category superCategory;
 

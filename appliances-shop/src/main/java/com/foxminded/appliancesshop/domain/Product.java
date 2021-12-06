@@ -1,7 +1,6 @@
 package com.foxminded.appliancesshop.domain;
 
-import java.util.Objects;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,12 +25,12 @@ public class Product implements Comparable<Product> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Category category;
 	private Integer price;
 	private String brand;
 	private String description;
-	@OneToMany
+	@OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true)
 	@Transient
 	private Item item;
 	private int unitsLeftInWarehouse;
@@ -55,21 +54,6 @@ public class Product implements Comparable<Product> {
 		this.brand = brand;
 		this.description = description;
 		this.unitsLeftInWarehouse = unitsLeftInWarehouse;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Product other = (Product) obj;
-		return Objects.equals(brand, other.brand) && Objects.equals(category.getId(), other.category.getId())
-				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
-				&& Objects.equals(item, other.item) && Objects.equals(name, other.name)
-				&& Objects.equals(price, other.price);
 	}
 
 }

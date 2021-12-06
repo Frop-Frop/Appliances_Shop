@@ -14,6 +14,7 @@ import lombok.Data;
 
 @Data
 public class SecurityUser implements UserDetails {
+	private static final long serialVersionUID = -537670333331362983L;
 	private final String email;
 	private final String password;
 	private final List<SimpleGrantedAuthority> authorities;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -35,12 +36,12 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Customer customer;
 
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "cart")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "cart", orphanRemoval = true)
 	private Set<Item> items = new HashSet<>();
 
 	public Cart(Long id, Set<Item> items) {
@@ -78,9 +79,22 @@ public class Cart {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id.intValue();
-		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
-		result = prime * result + ((items.isEmpty()) ? 0 : items.size());
+		result = prime * result + ((customer == null) ? 0 : customer.getId().intValue());
+		result = prime * result + ((items == null) ? 0 : items.size());
 		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cart other = (Cart) obj;
+		return Objects.equals(id, other.id) && Objects.equals(customer.getId(), other.customer.getId())
+				&& Objects.equals(items, other.items);
 	}
 
 }

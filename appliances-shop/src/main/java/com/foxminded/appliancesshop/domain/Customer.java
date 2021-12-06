@@ -15,8 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,6 +31,7 @@ import lombok.ToString;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customers")
@@ -46,17 +45,16 @@ public class Customer extends User {
 	private String email;
 	private String password;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
 	private Cart cart;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
 	private Order order;
 
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "deferreds", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "customer", orphanRemoval = true)
 	private Set<Item> deferreds = new HashSet<>();
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
 	private Address address;
 
 	@Enumerated(value = EnumType.STRING)
@@ -78,21 +76,6 @@ public class Customer extends User {
 		List<Item> deferredsList = new ArrayList<>();
 		deferreds.forEach(deferredsList::add);
 		return deferredsList;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = (int) (prime * result + id);
-		result = prime * result + ((cart == null) ? 0 : cart.getId().intValue());
-		result = prime * result + ((address == null) ? 0 : address.getId().intValue());
-		result = prime * result + ((deferreds.isEmpty()) ? 0 : deferreds.size());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		return result;
 	}
 
 	public Customer(Long id, String firstName, String lastName, String email, String password, Cart cart, Order order,

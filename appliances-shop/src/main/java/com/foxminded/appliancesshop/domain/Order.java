@@ -38,7 +38,7 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Customer customer;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -46,7 +46,7 @@ public class Order {
 
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "order")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "order", orphanRemoval = true)
 	private Set<Item> items = new HashSet<>();
 
 	public Order(Long id, Set<Item> items) {
@@ -77,16 +77,6 @@ public class Order {
 
 	public void addItem(Item item) {
 		items.add(item);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id.intValue();
-		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
-		result = prime * result + ((items.isEmpty()) ? 0 : items.size());
-		return result;
 	}
 
 }

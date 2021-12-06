@@ -177,7 +177,6 @@ class CustomerServiceTest {
 		when(customerRepository.getById(1L)).thenReturn(customer);
 		ProductDTO productDTO1 = new ProductDTO(1L, "Product", 1L, 123, "Brand", "Description", 100);
 		ProductDTO productDTO2 = new ProductDTO(2L, "Product 1", 1L, 1234, "Brand", "Description1", 100);
-		List<ProductDTO> productDTOlist = Arrays.asList(productDTO1, productDTO2);
 		CartDTO cartDTO = new CartDTO();
 		cartDTO.setId(1l);
 		ItemDTO itemDTO1 = new ItemDTO();
