@@ -78,6 +78,10 @@ public class Customer extends User {
 		return deferredsList;
 	}
 
+	public Customer(Long id) {
+		this.id = id;
+	}
+
 	public Customer(Long id, String firstName, String lastName, String email, String password, Cart cart, Order order,
 			Set<Item> deferreds, Role role, Status status) {
 		this.id = id;

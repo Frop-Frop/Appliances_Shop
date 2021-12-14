@@ -102,11 +102,13 @@ public class Bootstrap implements CommandLineRunner {
 		Address address;
 		for (int i = 0; i < 10; i++) {
 			address = new Address();
+			address.setId((long) i + 1);
 			address.setCountry(countries.get(i));
 			address.setRegion(regions.get(i));
 			address.setCity(cities.get(i));
 			address.setStreet(streets.get(i));
 			address.setHouseNumber(houseNumbers.get(i));
+			address.setCustomer(new Customer((long) i + 1));
 			addressRepository.save(address);
 		}
 	}
@@ -194,7 +196,7 @@ public class Bootstrap implements CommandLineRunner {
 				"Insignia - 18.1  NS-RTM18WH8Q", "Whirlpool - 26.8 ", "LG - Door-in-Door 26.0");
 
 		List<String> descriptions = Arrays.asList(
-				"LG - 29 cu. Ft. 3 Door French Door with Ice Maker, and External Water Dispenser - Printproof Stainless Steel",
+				"LG - 29 cu. Ft. 3 Door French Door) with Ice Maker, and External Water Dispenser - Printproof Stainless Steel",
 				"Samsung - 28 cu. ft. Large Capacity 3-Door French Door Refrigerator with AutoFill Water Pitcher - Fingerprint Resistant Stainless Steel",
 				"LG - 20.2 Cu. Ft. Top-Freezer Refrigerator - Stainless Steel",
 				"Insignia™ - 18.1 Cu. Ft. Top-Freezer Refrigerator - White",

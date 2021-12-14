@@ -2,9 +2,9 @@ package com.foxminded.appliancesshop.domain;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,10 +20,10 @@ import lombok.NoArgsConstructor;
 public class Address {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
+	@MapsId
 	private Customer customer;
 	private String country;
 	private String region;
