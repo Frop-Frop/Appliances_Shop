@@ -57,13 +57,14 @@ public class Bootstrap implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		if (addressRepository.findAll().isEmpty()) {
-			loadAdsresses();
-			log.debug("Addresses loaded");
-		}
+
 		if (customerRepository.findAll().isEmpty()) {
 			loadCustomers();
 			log.debug("Customers loaded");
+		}
+		if (addressRepository.findAll().isEmpty()) {
+			loadAdsresses();
+			log.debug("Addresses loaded");
 		}
 		if (categoryRepository.findAll().isEmpty()) {
 			loadCategories();
@@ -73,44 +74,21 @@ public class Bootstrap implements CommandLineRunner {
 			loadProducts();
 			log.debug("Products loaded");
 		}
+
 		if (itemRepository.findAll().isEmpty()) {
 			addItemsToCarts();
 			log.debug("Items added to carts");
 		}
+
 		if (itemRepository.findDistinctByCustomerId(1L).isEmpty()) {
 			addItemsToDeferreds();
 			log.debug("Items added to deferreds");
 		}
 		if (administratorRepository.findAll().isEmpty()) {
 			loadAdministrators();
-			log.debug("Administrator added to deferreds");
+			log.debug("Administrator loaded");
 		}
 
-	}
-
-	private void loadAdsresses() {
-		List<String> countries = Arrays.asList("China", "Liberia", "China", "Spain", "Indonesia", "Poland", "Brazil",
-				"China", "France", "China");
-		List<String> regions = Arrays.asList("Guangdong", "Lofa", "Jiangmen", "Baleares", "Manjung", "Bilgoraj",
-				"Ceara", "Fengnan", "Pays de la Loire", "Luzhu");
-		List<String> cities = Arrays.asList("Yixi", "Voinjama", "Hongguang", "Palma De Mallorca", "Pongkor", "Goraj",
-				"Quixeramobim", "Qianying", "Saumur", "Shanjiao");
-		List<String> streets = Arrays.asList("Hoepker", "Transport", "Mariners Cove", "Bobwhite", "Old Gate", "Shasta",
-				"Jay", "Laurel", "American Ash", "Stone Corner");
-		List<String> houseNumbers = Arrays.asList("991", "393", "10/4", "3 A", "337", "83153", "230", "70062/2",
-				"82063", "9234");
-		Address address;
-		for (int i = 0; i < 10; i++) {
-			address = new Address();
-			address.setId((long) i + 1);
-			address.setCountry(countries.get(i));
-			address.setRegion(regions.get(i));
-			address.setCity(cities.get(i));
-			address.setStreet(streets.get(i));
-			address.setHouseNumber(houseNumbers.get(i));
-			address.setCustomer(new Customer((long) i + 1));
-			addressRepository.save(address);
-		}
 	}
 
 	private void loadCustomers() {
@@ -131,17 +109,43 @@ public class Bootstrap implements CommandLineRunner {
 			customer.setEmail(emails.get(i));
 			customer.setRole(Role.CUSTOMER);
 			customer.setStatus(Status.ACTIVE);
-			Address address = addressRepository.findById(Long.valueOf(i + 1)).get();
-			customer.setAddress(address);
-			Cart cart = cartRepository.save(new Cart());
-			customer.setCart(cart);
 			Customer savedCustomer = customerRepository.save(customer);
 
-			address.setCustomer(savedCustomer);
-			addressRepository.save(address);
-
+			Cart cart = new Cart();
+			cart.setId(savedCustomer.getId());
 			cart.setCustomer(savedCustomer);
-			cartRepository.save(cart);
+			Cart savedCart = cartRepository.save(cart);
+
+			savedCustomer.setCart(savedCart);
+			customerRepository.save(savedCustomer);
+		}
+	}
+
+	private void loadAdsresses() {
+		List<String> countries = Arrays.asList("China", "Liberia", "China", "Spain", "Indonesia", "Poland", "Brazil",
+				"China", "France", "China");
+		List<String> regions = Arrays.asList("Guangdong", "Lofa", "Jiangmen", "Baleares", "Manjung", "Bilgoraj",
+				"Ceara", "Fengnan", "Pays de la Loire", "Luzhu");
+		List<String> cities = Arrays.asList("Yixi", "Voinjama", "Hongguang", "Palma De Mallorca", "Pongkor", "Goraj",
+				"Quixeramobim", "Qianying", "Saumur", "Shanjiao");
+		List<String> streets = Arrays.asList("Hoepker", "Transport", "Mariners Cove", "Bobwhite", "Old Gate", "Shasta",
+				"Jay", "Laurel", "American Ash", "Stone Corner");
+		List<String> houseNumbers = Arrays.asList("991", "393", "10/4", "3 A", "337", "83153", "230", "70062/2",
+				"82063", "9234");
+		Address address;
+		for (int i = 0; i < 10; i++) {
+			address = new Address();
+			Customer customer = customerRepository.findById((long) i + 1).get();
+			address.setId(customer.getId());
+			address.setCountry(countries.get(i));
+			address.setRegion(regions.get(i));
+			address.setCity(cities.get(i));
+			address.setStreet(streets.get(i));
+			address.setHouseNumber(houseNumbers.get(i));
+			address.setCustomer(customer);
+			Address savedAddress = addressRepository.save(address);
+			customer.setAddress(savedAddress);
+			customerRepository.save(customer);
 		}
 	}
 
@@ -347,8 +351,7 @@ public class Bootstrap implements CommandLineRunner {
 
 	private void addItemsToCarts() {
 		for (Long iter = 1l; iter < 10l; iter++) {
-			Customer customer = customerRepository.findById(iter).get();
-			Cart cart = customer.getCart();
+			Cart cart = cartRepository.findById(iter).get();
 			int cartSize = (int) ((Math.random() * (5 - 1)) + 1);
 			for (int j = 0; j < cartSize; j++) {
 				Integer productId = (int) ((Math.random() * (47 - 1)) + 1);

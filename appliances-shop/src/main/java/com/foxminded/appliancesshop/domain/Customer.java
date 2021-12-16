@@ -27,7 +27,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @Entity
@@ -45,16 +44,14 @@ public class Customer extends User {
 	private String email;
 	private String password;
 
-	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
 	private Cart cart;
-	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
 	private Order order;
 
-	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "customer", orphanRemoval = true)
 	private Set<Item> deferreds = new HashSet<>();
-	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
 	private Address address;
 
 	@Enumerated(value = EnumType.STRING)
