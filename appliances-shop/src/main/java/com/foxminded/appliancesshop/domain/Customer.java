@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.foxminded.appliancesshop.domain.security.Role;
@@ -44,14 +45,18 @@ public class Customer extends User {
 	private String email;
 	private String password;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
+	@OneToOne(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
+	@PrimaryKeyJoinColumn
 	private Cart cart;
+
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
 	private Order order;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "customer", orphanRemoval = true)
 	private Set<Item> deferreds = new HashSet<>();
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
+
+	@OneToOne(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
+	@PrimaryKeyJoinColumn
 	private Address address;
 
 	@Enumerated(value = EnumType.STRING)
@@ -75,10 +80,6 @@ public class Customer extends User {
 		return deferredsList;
 	}
 
-	public Customer(Long id) {
-		this.id = id;
-	}
-
 	public Customer(Long id, String firstName, String lastName, String email, String password, Cart cart, Order order,
 			Set<Item> deferreds, Role role, Status status) {
 		this.id = id;
@@ -92,5 +93,8 @@ public class Customer extends User {
 		this.status = status;
 		this.order = order;
 	}
+
+	// (foreignKeys = @ForeignKey(entity = Address.class, childColumns = "id_deck",
+	// onDelete = CASCADE))
 
 }

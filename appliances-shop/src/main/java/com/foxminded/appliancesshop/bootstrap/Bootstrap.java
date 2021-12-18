@@ -137,12 +137,12 @@ public class Bootstrap implements CommandLineRunner {
 			address = new Address();
 			Customer customer = customerRepository.findById((long) i + 1).get();
 			address.setId(customer.getId());
+			address.setCustomer(customer);
 			address.setCountry(countries.get(i));
 			address.setRegion(regions.get(i));
 			address.setCity(cities.get(i));
 			address.setStreet(streets.get(i));
 			address.setHouseNumber(houseNumbers.get(i));
-			address.setCustomer(customer);
 			Address savedAddress = addressRepository.save(address);
 			customer.setAddress(savedAddress);
 			customerRepository.save(customer);
