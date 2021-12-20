@@ -15,7 +15,6 @@ public class AppliancesShopApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AppliancesShopApplication.class, args);
-		System.out.println("End");
 	}
 
 }

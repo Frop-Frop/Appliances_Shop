@@ -1,4 +1,3 @@
-delete from deferreds;
 delete from administrators;
 delete from customers;
 delete from items;
