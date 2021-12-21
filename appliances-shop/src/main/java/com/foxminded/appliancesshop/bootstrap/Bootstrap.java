@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,7 +54,7 @@ public class Bootstrap implements CommandLineRunner {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	private static final Logger log = Logger.getLogger(Bootstrap.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(Bootstrap.class);
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -63,7 +64,7 @@ public class Bootstrap implements CommandLineRunner {
 			log.debug("Customers loaded");
 		}
 		if (addressRepository.findAll().isEmpty()) {
-			loadAdsresses();
+			loadAddresses();
 			log.debug("Addresses loaded");
 		}
 		if (categoryRepository.findAll().isEmpty()) {
@@ -121,7 +122,7 @@ public class Bootstrap implements CommandLineRunner {
 		}
 	}
 
-	private void loadAdsresses() {
+	private void loadAddresses() {
 		List<String> countries = Arrays.asList("China", "Liberia", "China", "Spain", "Indonesia", "Poland", "Brazil",
 				"China", "France", "China");
 		List<String> regions = Arrays.asList("Guangdong", "Lofa", "Jiangmen", "Baleares", "Manjung", "Bilgoraj",

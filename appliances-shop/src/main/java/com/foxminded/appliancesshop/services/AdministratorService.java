@@ -3,7 +3,8 @@ package com.foxminded.appliancesshop.services;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class AdministratorService {
 	@Autowired
 	private AdministratorMapper administratorMapper;
 
-	private static final Logger log = Logger.getLogger(AdministratorService.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(AdministratorService.class);
 
 	public AdministratorListDTO getAllAdministrators() {
 		log.debug("getAllAdministrators() called in AdministratorService");

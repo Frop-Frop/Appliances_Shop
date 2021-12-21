@@ -3,7 +3,8 @@ package com.foxminded.appliancesshop.services;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	private static final Logger log = Logger.getLogger(CategoryService.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
 
 	public CategoryListDTO getAllCategories() {
 		log.debug("getAllCategories() called in CategoryService");

@@ -3,7 +3,8 @@ package com.foxminded.appliancesshop.services;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class CartService {
 	@Autowired
 	private ItemMapper itemMapper;
 
-	private static final Logger log = Logger.getLogger(CartService.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(CartService.class);
 
 	public CartDTO getCartById(Long id) {
 		log.debug("getCartById() called in CartService with cart id: " + id);
